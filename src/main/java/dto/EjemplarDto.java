@@ -10,7 +10,6 @@ import java.io.Serializable;
 /**
  * DTO for {@link Ejemplar}
  */
-@Document(collection = "ejemplar")
 @Value
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EjemplarDto implements Serializable {

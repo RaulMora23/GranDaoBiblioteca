@@ -1,16 +1,23 @@
 package controlador;
 
 import dto.EjemplarDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import servicio.ServicioEjemplar;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/ejemplar")
 public class EjemplarControlador {
 
+    @Autowired
+    ServicioEjemplar servicioEjemplar;
+
     // 📥 Recibir y 📤 Devolver EjemplarDto en XML
     @GetMapping(value = "/XML", produces = "application/xml")
-    public EjemplarDto obtenerXML(@RequestBody EjemplarDto ejemplar) {
-        return new EjemplarDto("Título XML", "Autor XML");
+    public List<EjemplarDto> obtenerXML(@RequestBody EjemplarDto ejemplar) {
+        return servicioEjemplar.obtenerEjemplares();
     }
 
     // 📥 Recibir y 📤 Devolver EjemplarDto en JSON
@@ -22,12 +29,20 @@ public class EjemplarControlador {
     // 📥 Recibir y 📤 Devolver EjemplarDto en Texto Plano
     @GetMapping(value = "/Texto", produces = "text/plain")
     public String obtenerTexto() {
-        return "Ejemplar en Texto";
+        servicioEjemplar.obtenerEjemplares();
+        for (EjemplarDto e : servicioEjemplar.obtenerEjemplares()) {
+            servicioEjemplar
+        }
+        return r;
     }
 
     // 📤 Crear EjemplarDto en XML
     @PostMapping(value = "/XML", consumes = "application/xml", produces = "application/xml")
     public EjemplarDto crearXML(@RequestBody EjemplarDto ejemplar) {
+        if(servicioEjemplar.validarEjemplar(ejemplar)){
+            servicioEjemplar.insertarEjemplar(ejemplar);
+            return ejemplar;
+        }else
         return ejemplar;
     }
 

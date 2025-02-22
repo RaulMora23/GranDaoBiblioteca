@@ -3,6 +3,7 @@ package entidad;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -11,6 +12,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "libro")
+@Document(collection = "libro")
 public class Libro {
     @Id
     @Column(name = "isbn", nullable = false, length = 20)

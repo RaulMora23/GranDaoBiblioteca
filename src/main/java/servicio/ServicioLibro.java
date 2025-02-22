@@ -4,6 +4,7 @@ import dto.LibroDto;
 import entidad.Libro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import repositorio.LibroMongo;
 import repositorio.LibroRepository;
 
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ public class ServicioLibro {
     
     @Autowired
     LibroRepository repo;
+    @Autowired
+    LibroMongo mongo;
 
     public boolean validarLibro(LibroDto libroDto){
         String isbn = libroDto.getIsbn();
@@ -52,6 +55,7 @@ public class ServicioLibro {
     }
     public boolean insertarLibro(LibroDto libroDto){
         try {
+            mongo.save(obtenerEntidad(libroDto));
             repo.save(obtenerEntidad(libroDto));
         }catch (Exception e){
             return false;
@@ -60,6 +64,7 @@ public class ServicioLibro {
     }
     public boolean eliminarLibro(String isbn){
         try {
+            mongo.deleteById(isbn);
             repo.deleteById(isbn);
         }catch (Exception e){
             return false;
@@ -68,6 +73,7 @@ public class ServicioLibro {
     }
     public boolean actualizarLibro(LibroDto libroDto){
         try {
+            mongo.save(obtenerEntidad(libroDto));
             repo.save(obtenerEntidad(libroDto));
         }catch (Exception e){
             return false;

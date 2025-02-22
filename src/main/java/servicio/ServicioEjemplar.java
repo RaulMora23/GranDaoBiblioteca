@@ -4,6 +4,7 @@ import dto.EjemplarDto;
 import entidad.Ejemplar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import repositorio.EjemplarMongo;
 import repositorio.EjemplarRepository;
 
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ public class ServicioEjemplar {
 
     @Autowired
     EjemplarRepository repo;
+    @Autowired
+    EjemplarMongo mongo;
 
     public boolean validarEjemplar(EjemplarDto ejemplarDto){
         String isbn = ejemplarDto.getIsbn();
@@ -36,6 +39,13 @@ public class ServicioEjemplar {
         }
         return false;
     }
+
+    public EjemplarDto obtenerDeString(String ejemplar){
+        String[] datos = ejemplar.split(",");
+        return new EjemplarDto(Integer.parseInt(datos[0]),datos[1],datos[2]);
+    }
+    public String 
+
     public EjemplarDto obtenerDTO(Ejemplar ejemplar){
         return new EjemplarDto(ejemplar.getId(),ejemplar.getIsbn().getIsbn(),ejemplar.getEstado());
     }
@@ -53,6 +63,7 @@ public class ServicioEjemplar {
     public boolean insertarEjemplar(EjemplarDto ejemplarDto){
         try {
             repo.save(obtenerEntidad(ejemplarDto));
+            mongo.save(obtenerEntidad(ejemplarDto));
         }catch (Exception e){
             return false;
         }
@@ -60,6 +71,7 @@ public class ServicioEjemplar {
     }
     public boolean eliminarEjemplar(int id){
         try {
+            mongo.deleteById(id);
             repo.deleteById(id);
         }catch (Exception e){
             return false;
@@ -68,7 +80,11 @@ public class ServicioEjemplar {
     }
     public boolean actualizarEjemplar(EjemplarDto ejemplarDto){
         try {
+            mongo.save(obtenerEntidad(ejemplarDto));
             repo.save(obtenerEntidad(ejemplarDto));
-        }catch (Exception e){}
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 }

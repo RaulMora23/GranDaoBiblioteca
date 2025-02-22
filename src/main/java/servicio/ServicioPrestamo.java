@@ -5,6 +5,7 @@ import entidad.Prestamo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repositorio.EjemplarRepository;
+import repositorio.PrestamoMongo;
 import repositorio.PrestamoRepository;
 import repositorio.UsuarioRepository;
 
@@ -17,6 +18,8 @@ public class ServicioPrestamo {
 
     @Autowired
     PrestamoRepository repo;
+    @Autowired
+    PrestamoMongo mongo;
     @Autowired
     UsuarioRepository usuarioRepo;
     @Autowired
@@ -51,6 +54,7 @@ public class ServicioPrestamo {
     }
     public boolean insertarPrestamo(PrestamoDto prestamoDto){
         try {
+            mongo.save(obtenerEntidad(prestamoDto));
             repo.save(obtenerEntidad(prestamoDto));
         }catch (Exception e){
             return false;
@@ -59,6 +63,7 @@ public class ServicioPrestamo {
     }
     public boolean eliminarPrestamo(int id){
         try {
+            mongo.deleteById(id);
             repo.deleteById(id);
         }catch (Exception e){
             return false;
@@ -67,6 +72,7 @@ public class ServicioPrestamo {
     }
     public boolean actualizarPrestamo(PrestamoDto prestamoDto){
         try {
+            mongo.save(obtenerEntidad(prestamoDto));
             repo.save(obtenerEntidad(prestamoDto));
         }catch (Exception e){
             return false;
