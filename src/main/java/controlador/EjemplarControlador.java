@@ -1,6 +1,7 @@
 package controlador;
 
 import dto.EjemplarDto;
+import entidad.Ejemplar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import servicio.ServicioEjemplar;
@@ -53,7 +54,7 @@ public class EjemplarControlador {
 
     // 📤 Actualizar EjemplarDto en JSON
     @PutMapping(value = "/JSON", consumes = "application/json", produces = "application/json")
-    public EjemplarDto actualizarJSON(@RequestBody EjemplarDto ejemplar) {
+    public Ejemplar actualizarJSON(@RequestBody EjemplarDto ejemplar) {
         return servicioEjemplar.obtenerEntidad(ejemplar);
     }
 
@@ -74,46 +75,20 @@ public class EjemplarControlador {
     // 📥 Recibir y 📤 Devolver EjemplarDto en Texto Plano
     @GetMapping(value = "/Texto", produces = "text/plain")
     public String obtenerTexto() {
-        List<EjemplarDto> lista = servicioEjemplar.obtenerEjemplares();
-        StringBuilder texto = new StringBuilder();
-        for (EjemplarDto ejemplar : lista){
-            texto.append(ejemplar.toString());
-            return texto.toString();
-        }
-        return texto.toString();
+       return servicioEjemplar.obtenerEjemplarTexto();
     }
     @PostMapping(value = "/Texto", consumes = "text/plain", produces = "text/plain")
-    public EjemplarDto agregarTexto(String texto){
-        String[] lineas = texto.split(",");
-        EjemplarDto ejemplarDto = new EjemplarDto(Integer.parseInt(lineas[0]), lineas[1], lineas[2]);
-        boolean valido = servicioEjemplar.insertarEjemplar(ejemplarDto);
+    public String agregarTexto(String texto){
+        return servicioEjemplar.insertarEjemplarTexto(texto) == true ? texto : null;
 
-        if(valido){
-            return ejemplarDto;
-        }else{
-            return null;
-        }
     }
     @PutMapping(value = "/Texto", consumes = "text/plain", produces = "text/plain")
-    public EjemplarDto modificarTexto(String texto){
-        String[] lineas = texto.split(",");
-        EjemplarDto ejemplarDto = new EjemplarDto(Integer.parseInt(lineas[0]), lineas[1], lineas[2]);
-        boolean valido = servicioEjemplar.actualizarEjemplar(ejemplarDto);
-        if(valido){
-            return ejemplarDto;
-        }else{
-            return null;
-        }
+    public String modificarTexto(String texto){
+        return  servicioEjemplar.modificarEjemplarTexto(texto) == true ? texto : null;
     }
-    public EjemplarDto eliminarTexto(String texto){
-        String[] lineas = texto.split(",");
-        EjemplarDto ejemplarDto = new EjemplarDto(Integer.parseInt(lineas[0]), lineas[1], lineas[2]);
-        boolean valido = servicioEjemplar.eliminarEjemplar(ejemplarDto.getId());
-        if (valido){
-            return ejemplarDto;
-        }else{
-            return null;
-        }
+    public String eliminarTexto(String texto){
+        return servicioEjemplar.eliminarEjemplarTexto(texto) == true ? texto : null;
+
     }
 
 

@@ -110,4 +110,29 @@ public class ServicioEjemplar {
         }
         return true;
     }
+    public Boolean insertarEjemplarTexto(String texto){
+        String[] lineas = texto.split(",");
+        return this.insertarEjemplar(new EjemplarDto(Integer.parseInt(lineas[0]), lineas[1], lineas[2]));
+    }
+    public  Boolean modificarEjemplarTexto(String texto){
+        String[] lineas = texto.split(",");
+        return this.modificarEjemplarTexto(texto);
+    }
+    public Boolean AddEjemplarTexto(String texto){
+        String[] lineas = texto.split(",");
+        return this.insertarEjemplar(new EjemplarDto(Integer.parseInt(lineas[0]), lineas[1], lineas[2]));
+    }
+    public Boolean eliminarEjemplarTexto(String texto){
+        String[] lineas = texto.split(",");
+        return this.eliminarEjemplar(Integer.parseInt(lineas[0]));
+    }
+    public String obtenerEjemplarTexto(){
+        List<EjemplarDto> lista = obtenerEjemplares();
+        StringBuilder texto = new StringBuilder();
+        for (EjemplarDto ejemplar : lista){
+            texto.append(ejemplar.toString());
+            return texto.toString();
+        }
+        return texto.toString();
+    }
 }
