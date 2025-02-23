@@ -1,80 +1,91 @@
 package org.example.grandaobiblioteca.servicio;
+
+
 import org.example.grandaobiblioteca.entidad.Prestamo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.example.grandaobiblioteca.repositorio.EjemplarRepository;
+import org.example.grandaobiblioteca.entidad.PrestamoMongo;
 import org.example.grandaobiblioteca.repositorio.PrestamoMongoRepo;
 import org.example.grandaobiblioteca.repositorio.PrestamoRepository;
-import org.example.grandaobiblioteca.repositorio.UsuarioRepository;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
+import org.example.grandaobiblioteca.repositorio.LibroRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServicioPrestamo {
 
     @Autowired
-    PrestamoRepository repo;
+    private PrestamoRepository prestamoRepo;
     @Autowired
-    PrestamoMongoRepo mongo;
-    @Autowired
-    UsuarioRepository usuarioRepo;
-    @Autowired
-    EjemplarRepository ejemplarRepo;
-    
-    public boolean validarPrestamo(Prestamo prestamoDto){
+    private PrestamoMongoRepo mongo;
+
+    public boolean addPrestamo(Prestamo prestamo){
         try {
-            if (usuarioRepo.findById(prestamoDto.getUsuario().getId()).get().getPenalizacionHasta().isAfter(LocalDate.now())) {
-                if (ejemplarRepo.findById(prestamoDto.getEjemplar().getId()).get().getEstado().equals("Disponible")) {
-                    return true;
-                }
-            }
-        }catch (Exception e){
-            System.out.println("Prestamo no valido");
-            e.printStackTrace();
+            prestamoRepo.save(prestamo);
+            mongo.save(new PrestamoMongo(prestamo));
+            return true;
+        } catch (Exception e) {
+            return false;
         }
-        return false;
     }
-    public Prestamo obtenerDTO(Prestamo prestamo){
-        return new Prestamo(prestamo.getId(),prestamo.getUsuario(),prestamo.getEjemplar(),prestamo.getFechaInicio(),prestamo.getFechaDevolucion());
+    public boolean deletePrestamo(Integer id){
+        try{
+            prestamoRepo.deleteById(id);
+            mongo.deleteById(id);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
     }
-    public Prestamo obtenerEntidad(Prestamo prestamoDto){
-        return repo.findById(prestamoDto.getId()).get();
+    public Boolean updatePrestamo(Prestamo prestamo) {
+        try {
+            // Buscar el prestamo por el ISBN proporcionado
+            Optional<Prestamo> prestamoExistente = prestamoRepo.findById(prestamo.getId());
+
+            if (prestamoExistente.isPresent()) {
+                //no hace falta existingE es igual a prestamo
+                /* Obtener el prestamo existente
+                Prestamo existingPrestamo = prestamoExistente.get();
+
+                // No modificar el ISBN
+                existingPrestamo.setAutor(prestamo.getAutor());
+                existingPrestamo.setTitulo(prestamo.getTitulo());
+                existingPrestamo.setPrestamos(prestamo.getPrestamos());*/
+
+                // Guardar los cambios en el repositorio
+                prestamoRepo.save(prestamo);
+                mongo.save(new PrestamoMongo(prestamo));
+                return true;
+            } else {
+                // Si no se encuentra el prestamo, devolver false
+                //System.out.println("Prestamo con ISBN " + isbn + " no encontrado.");
+                return false;
+            }
+        } catch (Exception e) {
+            // Registrar la excepción para depuración
+            System.err.println("Error al actualizar el prestamo: " + e.getMessage());
+            return false;
+        }
     }
 
-    public List<Prestamo> obtenerPrestamoes(){
-        List<Prestamo> lista = new ArrayList<>();
-        repo.findAll().forEach(e->{
-            lista.add(obtenerDTO(e));
-        });
-        return lista;
+
+    public ResponseEntity<Prestamo> findPrestamo(Integer id){
+        Prestamo prestamo = prestamoRepo.findById(id).get();
+        return ResponseEntity.ok(prestamo);
     }
-    public boolean insertarPrestamo(Prestamo Prestamo){
-        try {
-            mongo.save(obtenerEntidad(Prestamo));
-            repo.save(obtenerEntidad(Prestamo));
-        }catch (Exception e){
-            return false;
+    public ResponseEntity<List<Prestamo>> findALL(){
+        List<Prestamo> prestamos = prestamoRepo.findAll();
+        return ResponseEntity.ok(prestamos);
+    }
+
+    public String findALLText(){
+        List<Prestamo> prestamos = this.findALL().getBody();
+        StringBuilder texto = new StringBuilder();
+        for (Prestamo prestamo : prestamos) {
+            texto.append(prestamo.toString());
         }
-        return true;
+        return texto.toString();
     }
-    public boolean eliminarPrestamo(int id){
-        try {
-            mongo.deleteById(id);
-            repo.deleteById(id);
-        }catch (Exception e){
-            return false;
-        }
-        return true;
-    }
-    public boolean actualizarPrestamo(Prestamo Prestamo){
-        try {
-            mongo.save(obtenerEntidad(Prestamo));
-            repo.save(obtenerEntidad(Prestamo));
-        }catch (Exception e){
-            return false;
-        }
-        return true;
-    }
+
 }

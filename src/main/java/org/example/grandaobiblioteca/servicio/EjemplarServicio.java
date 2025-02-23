@@ -17,7 +17,7 @@ public class EjemplarServicio {
 
     @Autowired
     private EjemplarRepository ejemplarRepo;
-
+    @Autowired
     private EjemplarMongoRepo mongo;
 
     @Autowired

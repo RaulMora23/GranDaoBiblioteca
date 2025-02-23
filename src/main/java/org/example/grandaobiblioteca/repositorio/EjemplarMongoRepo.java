@@ -8,5 +8,4 @@ import java.util.List;
 
 @Repository
 public interface EjemplarMongoRepo extends MongoRepository<EjemplarMongo, Integer> {
-    List<EjemplarMongo> getAllByIsbn_Isbn(String isbnIsbn);
 }
