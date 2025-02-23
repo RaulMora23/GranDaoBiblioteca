@@ -1,7 +1,7 @@
 package org.example.grandaobiblioteca.controlador;
 
 import org.example.grandaobiblioteca.entidad.Prestamo;
-import org.example.grandaobiblioteca.servicio.ServicioPrestamo;
+import org.example.grandaobiblioteca.servicio.PrestamoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +12,7 @@ import java.util.List;
 public class PrestamoControlador {
 
     @Autowired
-    ServicioPrestamo servicioPrestamo;
+    PrestamoServicio servicioPrestamo;
 
     @GetMapping("/JSON")
     public List<Prestamo> findAllPrestamo(){
