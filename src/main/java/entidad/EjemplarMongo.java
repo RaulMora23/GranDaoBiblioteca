@@ -32,4 +32,10 @@ public class EjemplarMongo {
         this.estado = estado;
         this.prestamos = prestamos;
     }
+
+    public EjemplarMongo(Libro isbn, String estado, Set<Prestamo> prestamos) {
+        this.isbn = isbn;
+        this.estado = estado;
+        this.prestamos = prestamos;
+    }
 }
