@@ -1,15 +1,14 @@
 package org.example.grandaobiblioteca.entidad;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "usuario")
 public class Usuario {
@@ -18,18 +17,27 @@ public class Usuario {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Size(max = 15)
+    @NotNull
     @Column(name = "dni", nullable = false, length = 15)
     private String dni;
 
+    @Size(max = 100)
+    @NotNull
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
+    @Size(max = 100)
+    @NotNull
     @Column(name = "email", nullable = false, length = 100)
     private String email;
 
+    @Size(max = 255)
+    @NotNull
     @Column(name = "password", nullable = false)
     private String password;
 
+    @NotNull
     @Lob
     @Column(name = "tipo", nullable = false)
     private String tipo;
@@ -38,11 +46,8 @@ public class Usuario {
     private LocalDate penalizacionHasta;
 
     @OneToMany(mappedBy = "usuario")
+    @JsonManagedReference("usuario-prestamo")
     private Set<Prestamo> prestamos = new LinkedHashSet<>();
-
-    public Usuario() {
-
-    }
 
     public Integer getId() {
         return id;
@@ -108,24 +113,4 @@ public class Usuario {
         this.prestamos = prestamos;
     }
 
-    public Usuario(Integer id, String dni, String nombre, String email, String password, String tipo, LocalDate penalizacionHasta, Set<Prestamo> prestamos) {
-        this.id = id;
-        this.dni = dni;
-        this.nombre = nombre;
-        this.email = email;
-        this.password = password;
-        this.tipo = tipo;
-        this.penalizacionHasta = penalizacionHasta;
-        this.prestamos = prestamos;
-    }
-
-    public Usuario(String dni, String nombre, String email, String password, String tipo, LocalDate penalizacionHasta, Set<Prestamo> prestamos) {
-        this.dni = dni;
-        this.nombre = nombre;
-        this.email = email;
-        this.password = password;
-        this.tipo = tipo;
-        this.penalizacionHasta = penalizacionHasta;
-        this.prestamos = prestamos;
-    }
 }
