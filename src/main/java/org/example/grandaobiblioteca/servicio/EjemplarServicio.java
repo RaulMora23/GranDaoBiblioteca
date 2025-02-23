@@ -19,9 +19,39 @@ public class EjemplarServicio {
     private EjemplarRepository ejemplarRepo;
     @Autowired
     private EjemplarMongoRepo mongo;
-
     @Autowired
     private LibroRepository libroRepo;
+
+    public boolean validarEjemplar(Ejemplar ejemplar) {
+        if (ejemplar.getEstado().equals("Disponible") && ejemplar.getEstado().equals("Dañado") && ejemplar.getEstado().equals("Prestado")) {
+            return false;
+        }
+        String isbn = ejemplar.getIsbn().getIsbn();
+        isbn = isbn.replaceAll("-", "");
+        int i = 1;
+        int valor = 0;
+        try {
+            for (char caracter : isbn.toCharArray()) {
+                if (i == 13) {
+                    valor = valor + Integer.parseInt(String.valueOf(caracter));
+                    if (valor % 10 == 0) {
+                        return true;
+                    }
+                } else if (i % 2 == 1) {
+                    valor = valor + Integer.parseInt(String.valueOf(caracter));
+                } else {
+                    valor = valor + Integer.parseInt(String.valueOf(caracter)) * 3;
+                }
+                i++;
+            }
+        } catch (Exception e) {
+            System.out.println("Isbn no valido");
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
     public boolean addEjemplar(Ejemplar ejemplar){
         try {
             ejemplarRepo.save(ejemplar);
