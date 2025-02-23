@@ -63,7 +63,7 @@ public class ServicioEjemplar {
     public Ejemplar obtenerEntidad(EjemplarDto ejemplarDto) {
         try {
             if (ejemplarDto.getId() == null) {
-                return new Ejemplar(libroRepo.getByIsbn(ejemplarDto.getIsbn()), ejemplarDto.getEstado(), prestamoRepo.getByEjemplar_Id(ejemplarDto.getId()))
+                return new Ejemplar(libroRepo.getByIsbn(ejemplarDto.getIsbn()), ejemplarDto.getEstado(), prestamoRepo.getByEjemplar_Id(ejemplarDto.getId()));
             }
             return new Ejemplar(ejemplarDto.getId(), libroRepo.getByIsbn(ejemplarDto.getIsbn()), ejemplarDto.getEstado(), prestamoRepo.getByEjemplar_Id(ejemplarDto.getId()));
         } catch (Exception e) {
@@ -75,7 +75,7 @@ public class ServicioEjemplar {
     public EjemplarMongo obtenerMongo(EjemplarDto ejemplarDto) {
         try {
             if (ejemplarDto.getId() == null) {
-                return new EjemplarMongo(libroRepo.getByIsbn(ejemplarDto.getIsbn()), ejemplarDto.getEstado(), prestamoRepo.getByEjemplar_Id(ejemplarDto.getId()))
+                return new EjemplarMongo(libroRepo.getByIsbn(ejemplarDto.getIsbn()), ejemplarDto.getEstado(), prestamoRepo.getByEjemplar_Id(ejemplarDto.getId()));
             }
             return new EjemplarMongo(ejemplarDto.getId(), libroMongoRepo.getByIsbn(ejemplarDto.getIsbn()), ejemplarDto.getEstado(), prestamoMongoRepo.getByEjemplar_Id(ejemplarDto.getId()));
         } catch (Exception e) {
@@ -112,7 +112,7 @@ public class ServicioEjemplar {
         return true;
     }
 
-    public boolean actualizarEjemplar(EjemplarDto ejemplarDto, int id) {
+    public boolean actualizarEjemplar(EjemplarDto ejemplarDto) {
         //Aqui podriamos confirmar que el id exista o dejar que se cree en el id elegido
         try {
             mongo.save(obtenerMongo(ejemplarDto));

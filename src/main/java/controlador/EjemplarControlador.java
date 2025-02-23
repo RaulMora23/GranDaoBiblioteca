@@ -16,7 +16,7 @@ public class EjemplarControlador {
 
     // 📥 Recibir y 📤 Devolver EjemplarDto en XML
     @GetMapping(value = "/XML", produces = "application/xml")
-    public List<EjemplarDto> obtenerXML(@RequestBody EjemplarDto ejemplar) {
+    public List<EjemplarDto> obtenerXML() {
         return servicioEjemplar.obtenerEjemplares();
     }
 
@@ -54,7 +54,8 @@ public class EjemplarControlador {
     // 📤 Actualizar EjemplarDto en JSON
     @PutMapping(value = "/JSON", consumes = "application/json", produces = "application/json")
     public EjemplarDto actualizarJSON(@RequestBody EjemplarDto ejemplar) {
-        return servicioEjemplar.obtenerEntidad(ejemplar);
+        servicioEjemplar.actualizarEjemplar(ejemplar);
+        return ejemplar;
     }
 
     // 📤 Actualizar EjemplarDto en Texto Plano
