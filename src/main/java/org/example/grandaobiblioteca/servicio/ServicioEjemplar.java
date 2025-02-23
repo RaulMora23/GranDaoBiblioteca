@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -63,9 +64,9 @@ public class ServicioEjemplar {
     public Ejemplar obtenerEntidad(EjemplarDto ejemplarDto) {
         try {
             if (ejemplarDto.getId() == null) {
-                return new Ejemplar(libroRepo.getByIsbn(ejemplarDto.getIsbn()), ejemplarDto.getEstado(), prestamoRepo.getByEjemplar_Id(ejemplarDto.getId()));
+                return new Ejemplar(libroRepo.getByIsbn(ejemplarDto.getIsbn()), ejemplarDto.getEstado(), new HashSet<>(prestamoRepo.getAllByEjemplar_Id(ejemplarDto.getId())));
             }
-            return new Ejemplar(ejemplarDto.getId(), libroRepo.getByIsbn(ejemplarDto.getIsbn()), ejemplarDto.getEstado(), prestamoRepo.getByEjemplar_Id(ejemplarDto.getId()));
+            return new Ejemplar(ejemplarDto.getId(), libroRepo.getByIsbn(ejemplarDto.getIsbn()), ejemplarDto.getEstado(), new HashSet<>(prestamoRepo.getAllByEjemplar_Id(ejemplarDto.getId())));
         } catch (Exception e) {
             System.out.println("No se pudo instanciar Ejemplar");
         }
@@ -83,7 +84,7 @@ public class ServicioEjemplar {
         }
         return null;
     }
-
+    //CRUD
     public List<EjemplarDto> obtenerEjemplares() {
         List<EjemplarDto> lista = new ArrayList<>();
         repo.findAll().forEach(e -> {

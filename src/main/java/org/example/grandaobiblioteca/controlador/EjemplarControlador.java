@@ -67,7 +67,8 @@ public class EjemplarControlador {
     // 🗑️ Eliminar EjemplarDto por ID
     @DeleteMapping("/{id}")
     public String eliminar(@PathVariable String id) {
-        return "Ejemplar con ID " + id + " eliminado";
+        servicioEjemplar.eliminarEjemplar(Integer.parseInt(id));
+        return "string";
     }
 
     // Metodos Por texto

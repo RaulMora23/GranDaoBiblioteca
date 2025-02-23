@@ -1,14 +1,21 @@
 package org.example.grandaobiblioteca.servicio;
 
 import org.example.grandaobiblioteca.dto.LibroDto;
+import org.example.grandaobiblioteca.entidad.Ejemplar;
+import org.example.grandaobiblioteca.entidad.EjemplarMongo;
 import org.example.grandaobiblioteca.entidad.Libro;
+import org.example.grandaobiblioteca.entidad.LibroMongo;
+import org.example.grandaobiblioteca.repositorio.EjemplarMongoRepo;
+import org.example.grandaobiblioteca.repositorio.EjemplarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.example.grandaobiblioteca.repositorio.LibroMongoRepo;
 import org.example.grandaobiblioteca.repositorio.LibroRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ServicioLibro {
@@ -17,6 +24,10 @@ public class ServicioLibro {
     LibroRepository repo;
     @Autowired
     LibroMongoRepo mongo;
+    @Autowired
+    EjemplarRepository ejemplarRepo;
+    @Autowired
+    EjemplarMongoRepo ejemplarMongoRepo;
 
     public boolean validarLibro(LibroDto libroDto){
         String isbn = libroDto.getIsbn();
@@ -43,7 +54,10 @@ public class ServicioLibro {
         return new LibroDto(libro.getIsbn(),libro.getTitulo(),libro.getAutor());
     }
     public Libro obtenerEntidad(LibroDto libroDto){
-        return repo.findById(libroDto.getIsbn()).get();
+        return new Libro(libroDto.getIsbn(),libroDto.getTitulo(),libroDto.getAutor(),ejemplarRepo.getAllByIsbn_Isbn(libroDto.getIsbn()));
+    }
+    public LibroMongo obtenerMongo(LibroDto libroDto){
+        return new LibroMongo(libroDto.getIsbn(),libroDto.getTitulo(),libroDto.getAutor(),new HashSet<>(ejemplarMongoRepo.getAllByIsbn_Isbn(libroDto.getIsbn())));
     }
 
     public List<LibroDto> obtenerLibros(){

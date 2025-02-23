@@ -40,6 +40,10 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private Set<Prestamo> prestamos = new LinkedHashSet<>();
 
+    public Usuario() {
+
+    }
+
     public Integer getId() {
         return id;
     }
@@ -101,6 +105,27 @@ public class Usuario {
     }
 
     public void setPrestamos(Set<Prestamo> prestamos) {
+        this.prestamos = prestamos;
+    }
+
+    public Usuario(Integer id, String dni, String nombre, String email, String password, String tipo, LocalDate penalizacionHasta, Set<Prestamo> prestamos) {
+        this.id = id;
+        this.dni = dni;
+        this.nombre = nombre;
+        this.email = email;
+        this.password = password;
+        this.tipo = tipo;
+        this.penalizacionHasta = penalizacionHasta;
+        this.prestamos = prestamos;
+    }
+
+    public Usuario(String dni, String nombre, String email, String password, String tipo, LocalDate penalizacionHasta, Set<Prestamo> prestamos) {
+        this.dni = dni;
+        this.nombre = nombre;
+        this.email = email;
+        this.password = password;
+        this.tipo = tipo;
+        this.penalizacionHasta = penalizacionHasta;
         this.prestamos = prestamos;
     }
 }
