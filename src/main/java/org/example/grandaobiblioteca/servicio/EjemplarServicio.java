@@ -104,12 +104,18 @@ public class EjemplarServicio {
     public String addEjemplarText(String texto){
         String[] linea = texto.split(",");
         Ejemplar ejemplar = new Ejemplar(Integer.parseInt(linea[0]),libroRepo.findById(linea[1]).get(), linea[2]);
+        if(!validarEjemplar(ejemplar)){
+            return "Ejemplar no valido";
+        }
         boolean valor = this.addEjemplar(ejemplar);
         return valor == true ? "Ejemplar añadido" : "Error al añadir el ejemplar";
     }
     public String updateEjemplarText(String texto){
         String[] linea = texto.split(",");
         Ejemplar ejemplar = new Ejemplar(Integer.parseInt(linea[0]),libroRepo.findById(linea[1]).get(), linea[2]);
+        if(!validarEjemplar(ejemplar)){
+            return "Ejemplar no valido";
+        }
         boolean valor = this.updateEjemplar(ejemplar);
         return valor == true ? "Ejemplar actualizado" : "Error al actualizar el ejemplar";
     }

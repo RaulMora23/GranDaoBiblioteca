@@ -97,12 +97,18 @@ public class LibroServicio {
     public String addLibroText(String texto){
         String[] linea = texto.split(",");
         Libro libro = new Libro(linea[0], linea[1], linea[2]);
+        if(!validarEjemplar(libro)){
+            return "Libro no valido";
+        }
         boolean valor = this.addLibro(libro);
         return valor == true ? "Libro añadido" : "Error al añadir el libro";
     }
     public String updateLibroText(String texto){
         String[] linea = texto.split(",");
         Libro libro = new Libro(linea[0], linea[1], linea[2]);
+        if(!validarEjemplar(libro)){
+            return "Libro no valido";
+        }
         boolean valor = this.updateLibro(libro);
         return valor == true ? "Libro actualizado" : "Error al actualizar el libro";
     }

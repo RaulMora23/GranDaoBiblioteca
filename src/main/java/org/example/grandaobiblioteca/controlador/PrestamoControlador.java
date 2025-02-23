@@ -17,18 +17,22 @@ public class PrestamoControlador {
     PrestamoServicio servicioPrestamo;
 
     @GetMapping("/JSON")
-    public ResponseEntity<List<Prestamo>> findAllPrestamo(){
-        return servicioPrestamo.findALL();
-    }
+    public ResponseEntity<List<Prestamo>> findAllPrestamo(){return servicioPrestamo.findALL();}
 
     @PostMapping(value = "/JSON", consumes = "application/json", produces = "application/json")
     public boolean addPrestamo(@RequestBody Prestamo prestamo){
-        return servicioPrestamo.addPrestamo(prestamo);
+        if(servicioPrestamo.validarPrestamo(prestamo)) {
+            return servicioPrestamo.addPrestamo(prestamo);
+        }
+        return false;
     }
 
     @PutMapping(value = "/JSON", consumes = "application/json", produces = "application/json")
     public boolean updatePrestamo(@RequestBody Prestamo prestamo) {
-        return servicioPrestamo.updatePrestamo(prestamo);
+        if(servicioPrestamo.validarPrestamo(prestamo)) {
+            return servicioPrestamo.updatePrestamo(prestamo);
+        }
+        return false;
     }
 
     @DeleteMapping(value = "/{id}", produces = "application/json")
@@ -46,15 +50,17 @@ public class PrestamoControlador {
     }
     @PostMapping(value = "/XML", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Prestamo> addPrestamoXML(@RequestBody Prestamo Prestamo) {
-        return servicioPrestamo.addPrestamo(Prestamo) == true ? ResponseEntity.ok(Prestamo) : null;
+        if(servicioPrestamo.validarPrestamo(Prestamo)){
+            return servicioPrestamo.addPrestamo(Prestamo) == true ? ResponseEntity.ok(Prestamo) : null;
+        }
+        return null;
     }
     @PutMapping(value = "/XML", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Prestamo> updatePrestamoXML(@RequestBody Prestamo Prestamo){
+        if(servicioPrestamo.validarPrestamo(Prestamo)){
         return servicioPrestamo.updatePrestamo(Prestamo) == true ? ResponseEntity.ok(Prestamo) : null;
-    }
-    @DeleteMapping(value = "/XML/{id}", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<Prestamo> deletePrestamoXML(@PathVariable int id) {
-        return servicioPrestamo.deletePrestamo(id) == true ? ResponseEntity.ok().build() : null;
+        }
+        return null;
     }
 
     // Texto

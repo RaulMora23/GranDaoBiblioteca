@@ -29,15 +29,21 @@ public class LibroControlador {
 
     @PostMapping(value = "/JSON", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Libro> addLibro(@RequestBody Libro libro){
-        return libroServicio.addLibro(libro) == true ? ResponseEntity.ok(libro) : null;
+        if(libroServicio.validarEjemplar(libro)) {
+            return libroServicio.addLibro(libro) == true ? ResponseEntity.ok(libro) : null;
+        }
+        return null;
     }
 
     @PutMapping(value = "/JSON", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Libro> updateLibro(@RequestBody Libro libro) {
-        return libroServicio.updateLibro(libro) == true ? ResponseEntity.ok(libro) : null;
+        if(libroServicio.validarEjemplar(libro)) {
+            return libroServicio.updateLibro(libro) == true ? ResponseEntity.ok(libro) : null;
+        }
+        return null;
     }
 
-    @DeleteMapping("/JSON/{isbn}")
+    @DeleteMapping("/{isbn}")
     public ResponseEntity<Libro> deleteLibro(@PathVariable String isbn){
         return libroServicio.deleteLibro(isbn) == true ? ResponseEntity.ok().build() : null;
     }
@@ -54,15 +60,19 @@ public class LibroControlador {
     }
     @PostMapping(value = "/XML", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Libro> addLibroXML(@RequestBody Libro libro) {
-        return libroServicio.addLibro(libro) == true ? ResponseEntity.ok(libro) : null;
+        if(libroServicio.validarEjemplar(libro)) {
+            return libroServicio.addLibro(libro) == true ? ResponseEntity.ok(libro) : null;
+        }
+        return null;
     }
+
+
     @PutMapping(value = "/XML", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Libro> updateLibroXML(@RequestBody Libro libro){
-        return libroServicio.updateLibro(libro) == true ? ResponseEntity.ok(libro) : null;
-    }
-    @DeleteMapping(value = "/XML/{isbn}", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<Libro> deleteLibroXML(@PathVariable String isbn) {
-        return libroServicio.deleteLibro(isbn) == true ? ResponseEntity.ok().build() : null;
+        if(libroServicio.validarEjemplar(libro)) {
+            return libroServicio.updateLibro(libro) == true ? ResponseEntity.ok(libro) : null;
+        }
+        return null;
     }
 
     // Texto

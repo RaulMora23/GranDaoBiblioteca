@@ -101,6 +101,9 @@ public class PrestamoServicio {
         LocalDate fin = LocalDate.parse(linea[4], formatter);
 
         Prestamo prestamo = new Prestamo(Integer.parseInt(linea[0]),usuarioRepo.getUsuarioById(Integer.parseInt(linea[1])),libroRepo.getLibroByIsbn(linea[2]),inicio,fin );
+        if(!validarPrestamo(prestamo)){
+            return "Prestamo no valido";
+        }
         boolean valor = this.addPrestamo(prestamo);
         return valor == true ? "Prestamo añadido" : "Error al añadir el prestamo";
     }
@@ -114,6 +117,9 @@ public class PrestamoServicio {
         LocalDate fin = LocalDate.parse(linea[4], formatter);
 
         Prestamo prestamo = new Prestamo(Integer.parseInt(linea[0]),usuarioRepo.getUsuarioById(Integer.parseInt(linea[1])),libroRepo.getLibroByIsbn(linea[2]),inicio,fin );
+        if(!validarPrestamo(prestamo)){
+            return "Prestamo no valido";
+        }
         boolean valor = this.updatePrestamo(prestamo);
         return valor == true ? "Prestamo actualizado" : "Error al actualizar el prestamo";
     }

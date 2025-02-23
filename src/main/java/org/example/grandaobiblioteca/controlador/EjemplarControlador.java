@@ -29,14 +29,19 @@ public class EjemplarControlador {
 
     @PostMapping(value = "/JSON", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Ejemplar> addEjemplar(@RequestBody Ejemplar ejemplar){
-        return ejemplarServicio.addEjemplar(ejemplar) == true ? ResponseEntity.ok(ejemplar) : null;
+        if(ejemplarServicio.validarEjemplar(ejemplar)) {
+            return ejemplarServicio.addEjemplar(ejemplar) == true ? ResponseEntity.ok(ejemplar) : null;
+        }
+        return null;
     }
 
     @PutMapping(value = "/JSON", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Ejemplar> updateEjemplar(@RequestBody Ejemplar Ejemplar) {
-        return ejemplarServicio.updateEjemplar(Ejemplar) == true ? ResponseEntity.ok(Ejemplar) : null;
+    public ResponseEntity<Ejemplar> updateEjemplar(@RequestBody Ejemplar ejemplar) {
+        if(ejemplarServicio.validarEjemplar(ejemplar)) {
+            return ejemplarServicio.updateEjemplar(ejemplar) == true ? ResponseEntity.ok(ejemplar) : null;
+        }
+        return null;
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Ejemplar> deleteEjemplar(@PathVariable int id){
         return ejemplarServicio.deleteEjemplar(id) == true ? ResponseEntity.ok().build() : null;
@@ -53,12 +58,18 @@ public class EjemplarControlador {
         return ejemplarServicio.findALL();
     }
     @PostMapping(value = "/XML", consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<Ejemplar> addEjemplarXML(@RequestBody Ejemplar Ejemplar) {
-        return ejemplarServicio.addEjemplar(Ejemplar) == true ? ResponseEntity.ok(Ejemplar) : null;
+    public ResponseEntity<Ejemplar> addEjemplarXML(@RequestBody Ejemplar ejemplar) {
+        if(ejemplarServicio.validarEjemplar(ejemplar)) {
+            return ejemplarServicio.addEjemplar(ejemplar) == true ? ResponseEntity.ok(ejemplar) : null;
+        }
+        return null;
     }
     @PutMapping(value = "/XML",consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Ejemplar> updateEjemplarXML(@RequestBody Ejemplar Ejemplar){
-        return ejemplarServicio.updateEjemplar(Ejemplar) == true ? ResponseEntity.ok(Ejemplar) : null;
+        if(ejemplarServicio.validarEjemplar(Ejemplar)) {
+            return ejemplarServicio.updateEjemplar(Ejemplar) == true ? ResponseEntity.ok(Ejemplar) : null;
+        }
+        return null;
     }
 
     // Texto
