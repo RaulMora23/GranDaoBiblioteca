@@ -12,7 +12,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "libro")
-@Document(collection = "libro")
 public class Libro {
     @Id
     @Column(name = "isbn", nullable = false, length = 20)

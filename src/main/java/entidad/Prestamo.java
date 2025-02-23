@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "prestamo")
-@Document(collection = "prestamo")
 public class Prestamo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
