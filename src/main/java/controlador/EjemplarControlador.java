@@ -54,7 +54,7 @@ public class EjemplarControlador {
     // 📤 Actualizar EjemplarDto en JSON
     @PutMapping(value = "/JSON", consumes = "application/json", produces = "application/json")
     public EjemplarDto actualizarJSON(@RequestBody EjemplarDto ejemplar) {
-        return ejemplar;
+        return servicioEjemplar.obtenerEntidad(ejemplar);
     }
 
     // 📤 Actualizar EjemplarDto en Texto Plano

@@ -16,7 +16,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "ejemplar")
-@Document(collection = "ejemplar")
 public class Ejemplar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,4 +35,10 @@ public class Ejemplar {
     @OneToMany(mappedBy = "ejemplar")
     private Set<Prestamo> prestamos = new LinkedHashSet<>();
 
+    public Ejemplar(Integer id, Libro isbn, String estado, Set<Prestamo> prestamos) {
+        this.id = id;
+        this.isbn = isbn;
+        this.estado = estado;
+        this.prestamos = prestamos;
+    }
 }
