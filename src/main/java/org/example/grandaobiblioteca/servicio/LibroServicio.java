@@ -1,6 +1,7 @@
 package org.example.grandaobiblioteca.servicio;
 
 
+import org.example.grandaobiblioteca.entidad.Ejemplar;
 import org.example.grandaobiblioteca.entidad.Libro;
 import org.example.grandaobiblioteca.entidad.LibroMongo;
 import org.example.grandaobiblioteca.repositorio.LibroMongoRepo;
@@ -18,6 +19,33 @@ public class LibroServicio {
     private LibroRepository libroRepo;
     @Autowired
     private LibroMongoRepo mongo;
+
+    public boolean validarEjemplar(Libro ejemplar) {
+
+        String isbn = ejemplar.getIsbn();
+        isbn = isbn.replaceAll("-", "");
+        int i = 1;
+        int valor = 0;
+        try {
+            for (char caracter : isbn.toCharArray()) {
+                if (i == 13) {
+                    valor = valor + Integer.parseInt(String.valueOf(caracter));
+                    if (valor % 10 == 0) {
+                        return true;
+                    }
+                } else if (i % 2 == 1) {
+                    valor = valor + Integer.parseInt(String.valueOf(caracter));
+                } else {
+                    valor = valor + Integer.parseInt(String.valueOf(caracter)) * 3;
+                }
+                i++;
+            }
+        } catch (Exception e) {
+            System.out.println("Isbn no valido");
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public boolean addLibro(Libro libro){
         try {

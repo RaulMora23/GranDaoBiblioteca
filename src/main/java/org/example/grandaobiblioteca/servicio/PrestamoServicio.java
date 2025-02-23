@@ -27,6 +27,20 @@ public class PrestamoServicio {
     @Autowired
     private LibroRepository libroRepo;
 
+    public boolean validarPrestamo(Prestamo prestamo){
+        try {
+            if (!usuarioRepo.getById(prestamo.getUsuario().getId()).getPenalizacionHasta().isAfter(LocalDate.now())) {
+                if (ejemplarRepo.getById(prestamo.getEjemplar().getId()).getEstado().equals("Disponible")) {
+                    return true;
+                }
+            }
+        }catch (Exception e){
+            System.out.println("Prestamo no valido");
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean addPrestamo(Prestamo prestamo){
         try {
 
