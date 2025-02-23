@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class PrestamoMongo {
 
     @Id
-    private Integer id;
+    private String id;
 
     @DBRef
     private UsuarioMongo usuario;
@@ -25,7 +25,7 @@ public class PrestamoMongo {
     public PrestamoMongo(){}
 
     public PrestamoMongo(Prestamo prestamo){
-        this.id=prestamo.getId();
+        this.id=prestamo.getId().toString();
         this.usuario = new UsuarioMongo(prestamo.getUsuario());
         this.ejemplar = new EjemplarMongo(prestamo.getEjemplar());
         this.fechaInicio = prestamo.getFechaInicio();

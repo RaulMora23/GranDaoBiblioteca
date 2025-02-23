@@ -53,7 +53,7 @@ public class ServicioUsuario {
     }
     public boolean insertarUsuario(Usuario Usuario){
         try {
-            mongo.save(obtenerEntidad(Usuario));
+       //     mongo.save(obtenerEntidad(Usuario));
             repo.save(obtenerEntidad(Usuario));
         }catch (Exception e){
             return false;
@@ -71,7 +71,7 @@ public class ServicioUsuario {
     }
     public boolean actualizarUsuario(Usuario Usuario){
         try {
-            mongo.save(obtenerEntidad(Usuario));
+       //     mongo.save(obtenerEntidad(Usuario));
             repo.save(obtenerEntidad(Usuario));
         }catch (Exception e){
             return false;
