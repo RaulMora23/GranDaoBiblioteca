@@ -3,6 +3,7 @@ package controlador;
 import dto.EjemplarDto;
 import entidad.Ejemplar;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import servicio.ServicioEjemplar;
 
@@ -78,15 +79,15 @@ public class EjemplarControlador {
        return servicioEjemplar.obtenerEjemplarTexto();
     }
     @PostMapping(value = "/Texto", consumes = "text/plain", produces = "text/plain")
-    public String agregarTexto(String texto){
+    public String agregarTexto(@Param(value = "texto") String texto){
         return servicioEjemplar.insertarEjemplarTexto(texto) == true ? texto : null;
 
     }
     @PutMapping(value = "/Texto", consumes = "text/plain", produces = "text/plain")
-    public String modificarTexto(String texto){
+    public String modificarTexto(@Param(value = "texto") String texto){
         return  servicioEjemplar.modificarEjemplarTexto(texto) == true ? texto : null;
     }
-    public String eliminarTexto(String texto){
+    public String eliminarTexto(@Param(value = "texto") String texto){
         return servicioEjemplar.eliminarEjemplarTexto(texto) == true ? texto : null;
 
     }
