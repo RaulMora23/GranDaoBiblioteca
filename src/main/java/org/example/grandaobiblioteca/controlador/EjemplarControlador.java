@@ -67,8 +67,6 @@ public class EjemplarControlador {
     public String findALLText(){
         return ejemplarServicio.findALLText();
     }
-    @GetMapping(value = "/TEXT/{isbn}", produces = MediaType.TEXT_PLAIN_VALUE)
-    public String findEjemplarText(@PathVariable int id){return ejemplarServicio.findByEjemplarTexto(id);}
     @PostMapping(value = "/TEXT", produces = MediaType.TEXT_PLAIN_VALUE)
     public String addEjemplarText(@RequestBody String texto){
         return ejemplarServicio.addEjemplarText(texto);
