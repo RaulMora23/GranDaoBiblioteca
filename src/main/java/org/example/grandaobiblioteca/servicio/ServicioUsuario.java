@@ -1,6 +1,4 @@
 package org.example.grandaobiblioteca.servicio;
-
-import org.example.grandaobiblioteca.dto.UsuarioDto;
 import org.example.grandaobiblioteca.entidad.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,10 +18,10 @@ public class ServicioUsuario {
     @Autowired
     UsuarioMongoRepo mongo;
 
-    public boolean validarUsuario(UsuarioDto usuarioDto){
+    public boolean validarUsuario(Usuario Usuario){
         ArrayList<String> listaLetras = new ArrayList<>(Arrays.asList("T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"));
-        String di = usuarioDto.getDni();
-        String diModificado = usuarioDto.getDni();
+        String di = Usuario.getDni();
+        String diModificado = Usuario.getDni();
         if (di.startsWith("X")) {
             diModificado = "0" + di.substring(1);
         }
@@ -39,24 +37,24 @@ public class ServicioUsuario {
             return false;
         }
     }
-    public UsuarioDto obtenerDTO(Usuario usuario){
-        return new UsuarioDto(usuario.getId(), usuario.getDni(), usuario.getNombre(), usuario.getEmail(), usuario.getPassword(),usuario.getTipo(),usuario.getPenalizacionHasta());
+    public Usuario obtenerDTO(Usuario usuario){
+        return new Usuario(usuario.getId(), usuario.getDni(), usuario.getNombre(), usuario.getEmail(), usuario.getPassword(),usuario.getTipo(),usuario.getPenalizacionHasta());
     }
-    public Usuario obtenerEntidad(UsuarioDto usuarioDto){
-        return repo.findById(usuarioDto.getId()).get();
+    public Usuario obtenerEntidad(Usuario Usuario){
+        return repo.findById(Usuario.getId()).get();
     }
 
-    public List<UsuarioDto> obtenerUsuarios(){
-        List<UsuarioDto> lista = new ArrayList<>();
+    public List<Usuario> obtenerUsuarios(){
+        List<Usuario> lista = new ArrayList<>();
         repo.findAll().forEach(e->{
             lista.add(obtenerDTO(e));
         });
         return lista;
     }
-    public boolean insertarUsuario(UsuarioDto usuarioDto){
+    public boolean insertarUsuario(Usuario Usuario){
         try {
-            mongo.save(obtenerEntidad(usuarioDto));
-            repo.save(obtenerEntidad(usuarioDto));
+            mongo.save(obtenerEntidad(Usuario));
+            repo.save(obtenerEntidad(Usuario));
         }catch (Exception e){
             return false;
         }
@@ -71,10 +69,10 @@ public class ServicioUsuario {
         }
         return true;
     }
-    public boolean actualizarUsuario(UsuarioDto usuarioDto){
+    public boolean actualizarUsuario(Usuario Usuario){
         try {
-            mongo.save(obtenerEntidad(usuarioDto));
-            repo.save(obtenerEntidad(usuarioDto));
+            mongo.save(obtenerEntidad(Usuario));
+            repo.save(obtenerEntidad(Usuario));
         }catch (Exception e){
             return false;
         }

@@ -14,30 +14,24 @@ import java.util.Set;
 
 @Entity
 @Table(name = "libro")
-@XmlRootElement(name = "libro")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Libro {
     @Id
     @Size(max = 20)
     @Column(name = "isbn", nullable = false, length = 20)
-    @XmlElement
     private String isbn;
 
     @Size(max = 200)
     @NotNull
     @Column(name = "titulo", nullable = false, length = 200)
-    @XmlElement
     private String titulo;
 
     @Size(max = 100)
     @NotNull
     @Column(name = "autor", nullable = false, length = 100)
-    @XmlElement
     private String autor;
 
     @OneToMany(mappedBy = "isbn")
     @JsonManagedReference("libro-ejemplar")
-    @XmlElement
     private Set<Ejemplar> ejemplars = new LinkedHashSet<>();
 
     public Libro(String isbn, String titulo, String autor) {

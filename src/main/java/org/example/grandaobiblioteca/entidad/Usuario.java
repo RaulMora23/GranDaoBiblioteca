@@ -37,6 +37,19 @@ public class Usuario {
     @Column(name = "password", nullable = false)
     private String password;
 
+    public Usuario(Integer id, String dni, String nombre, String email, String password, String tipo, LocalDate penalizacionHasta) {
+        this.id = id;
+        this.dni = dni;
+        this.nombre = nombre;
+        this.email = email;
+        this.password = password;
+        this.tipo = tipo;
+        this.penalizacionHasta = penalizacionHasta;
+    }
+    public Usuario() {
+    }
+
+
     @NotNull
     @Lob
     @Column(name = "tipo", nullable = false)

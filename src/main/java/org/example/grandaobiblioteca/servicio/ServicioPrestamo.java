@@ -1,6 +1,4 @@
 package org.example.grandaobiblioteca.servicio;
-
-import org.example.grandaobiblioteca.dto.PrestamoDto;
 import org.example.grandaobiblioteca.entidad.Prestamo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,10 +23,10 @@ public class ServicioPrestamo {
     @Autowired
     EjemplarRepository ejemplarRepo;
     
-    public boolean validarPrestamo(PrestamoDto prestamoDto){
+    public boolean validarPrestamo(Prestamo prestamoDto){
         try {
-            if (usuarioRepo.findById(prestamoDto.getUsuarioId()).get().getPenalizacionHasta().isAfter(LocalDate.now())) {
-                if (ejemplarRepo.findById(prestamoDto.getEjemplarId()).get().getEstado().equals("Disponible")) {
+            if (usuarioRepo.findById(prestamoDto.getUsuario().getId()).get().getPenalizacionHasta().isAfter(LocalDate.now())) {
+                if (ejemplarRepo.findById(prestamoDto.getEjemplar().getId()).get().getEstado().equals("Disponible")) {
                     return true;
                 }
             }
@@ -38,24 +36,24 @@ public class ServicioPrestamo {
         }
         return false;
     }
-    public PrestamoDto obtenerDTO(Prestamo prestamo){
-        return new PrestamoDto(prestamo.getId(),prestamo.getUsuario().getId(),prestamo.getEjemplar().getId(),prestamo.getFechaInicio(),prestamo.getFechaDevolucion());
+    public Prestamo obtenerDTO(Prestamo prestamo){
+        return new Prestamo(prestamo.getId(),prestamo.getUsuario(),prestamo.getEjemplar(),prestamo.getFechaInicio(),prestamo.getFechaDevolucion());
     }
-    public Prestamo obtenerEntidad(PrestamoDto prestamoDto){
+    public Prestamo obtenerEntidad(Prestamo prestamoDto){
         return repo.findById(prestamoDto.getId()).get();
     }
 
-    public List<PrestamoDto> obtenerPrestamoes(){
-        List<PrestamoDto> lista = new ArrayList<>();
+    public List<Prestamo> obtenerPrestamoes(){
+        List<Prestamo> lista = new ArrayList<>();
         repo.findAll().forEach(e->{
             lista.add(obtenerDTO(e));
         });
         return lista;
     }
-    public boolean insertarPrestamo(PrestamoDto prestamoDto){
+    public boolean insertarPrestamo(Prestamo Prestamo){
         try {
-            mongo.save(obtenerEntidad(prestamoDto));
-            repo.save(obtenerEntidad(prestamoDto));
+            mongo.save(obtenerEntidad(Prestamo));
+            repo.save(obtenerEntidad(Prestamo));
         }catch (Exception e){
             return false;
         }
@@ -70,10 +68,10 @@ public class ServicioPrestamo {
         }
         return true;
     }
-    public boolean actualizarPrestamo(PrestamoDto prestamoDto){
+    public boolean actualizarPrestamo(Prestamo Prestamo){
         try {
-            mongo.save(obtenerEntidad(prestamoDto));
-            repo.save(obtenerEntidad(prestamoDto));
+            mongo.save(obtenerEntidad(Prestamo));
+            repo.save(obtenerEntidad(Prestamo));
         }catch (Exception e){
             return false;
         }

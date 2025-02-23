@@ -35,6 +35,20 @@ public class Ejemplar {
     @JsonManagedReference("ejemplar-prestamo")
     private Set<Prestamo> prestamos = new LinkedHashSet<>();
 
+    public Ejemplar(Libro isbn, String estado) {
+        this.isbn = isbn;
+        this.estado = estado;
+    }
+
+    public Ejemplar(Integer id, Libro isbn, String estado) {
+        this.id = id;
+        this.isbn = isbn;
+        this.estado = estado;
+    }
+
+    public Ejemplar() {
+    }
+
     public Integer getId() {
         return id;
     }
@@ -67,4 +81,8 @@ public class Ejemplar {
         this.prestamos = prestamos;
     }
 
+    @Override
+    public String toString() {
+        return id + "," + isbn.getIsbn() + "," + estado + "\n";
+    }
 }
