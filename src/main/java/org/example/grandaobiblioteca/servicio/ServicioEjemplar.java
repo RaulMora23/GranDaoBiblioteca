@@ -112,7 +112,7 @@ public class ServicioEjemplar {
         return true;
     }
 
-    public boolean actualizarEjemplar(EjemplarDto ejemplarDto, int id) {
+    public boolean actualizarEjemplar(EjemplarDto ejemplarDto) {
         //Aqui podriamos confirmar que el id exista o dejar que se cree en el id elegido
         try {
             mongo.save(obtenerMongo(ejemplarDto));

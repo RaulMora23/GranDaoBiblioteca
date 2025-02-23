@@ -1,31 +1,25 @@
-package org.example.grandaobiblioteca.controlador;
+package controlador;
 
-import org.example.grandaobiblioteca.dto.EjemplarDto;
-import org.example.grandaobiblioteca.dto.ListaEjemplar;
-import org.example.grandaobiblioteca.entidad.Ejemplar;
+import dto.EjemplarDto;
+import entidad.Ejemplar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.example.grandaobiblioteca.servicio.ServicioEjemplar;
+import servicio.ServicioEjemplar;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/ejemplar")
 public class EjemplarControlador {
 
-    @Autowired()
+    @Autowired
     ServicioEjemplar servicioEjemplar;
 
     // 📥 Recibir y 📤 Devolver EjemplarDto en XML
-    @GetMapping(value = "/XML", produces = MediaType.APPLICATION_XML_VALUE)
-    @ResponseBody
-    public ListaEjemplar getEjemplares() {
-
-        return new ListaEjemplar(servicioEjemplar.obtenerEjemplares());
+    @GetMapping(value = "/XML", produces = "application/xml")
+    public List<EjemplarDto> obtenerXML() {
+        return servicioEjemplar.obtenerEjemplares();
     }
 
     // 📥 Recibir y 📤 Devolver EjemplarDto en JSON
@@ -61,10 +55,21 @@ public class EjemplarControlador {
 
     // 📤 Actualizar EjemplarDto en JSON
     @PutMapping(value = "/JSON", consumes = "application/json", produces = "application/json")
+<<<<<<< HEAD
+    public EjemplarDto actualizarJSON(@RequestBody EjemplarDto ejemplar) {
+        servicioEjemplar.actualizarEjemplar(ejemplar);
+        return ejemplar;
+=======
     public Ejemplar actualizarJSON(@RequestBody EjemplarDto ejemplar) {
         return servicioEjemplar.obtenerEntidad(ejemplar);
+>>>>>>> b5dc4583e23fb2ed6107aa1c251bad372401c9ae
     }
 
+    // 📤 Actualizar EjemplarDto en Texto Plano
+    @PutMapping(value = "/Texto", consumes = "text/plain", produces = "text/plain")
+    public String actualizarTexto(@RequestBody String texto) {
+        return "Ejemplar en Texto (Actualizado): " + texto;
+    }
 
     // 🗑️ Eliminar EjemplarDto por ID
     @DeleteMapping("/{id}")
@@ -84,7 +89,7 @@ public class EjemplarControlador {
         return servicioEjemplar.insertarEjemplarTexto(texto) == true ? texto : null;
 
     }
-    @PutMapping(value = "/ejemplar/modificarTexto", consumes = "text/plain", produces = "text/plain")
+    @PutMapping(value = "/Texto", consumes = "text/plain", produces = "text/plain")
     public String modificarTexto(@Param(value = "texto") String texto){
         return  servicioEjemplar.modificarEjemplarTexto(texto) == true ? texto : null;
     }
