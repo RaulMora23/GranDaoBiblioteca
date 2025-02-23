@@ -42,6 +42,12 @@ public class Ejemplar {
         this.prestamos = prestamos;
     }
 
+    public Ejemplar(Libro isbn, String estado, Set<Prestamo> prestamos) {
+        this.isbn = isbn;
+        this.estado = estado;
+        this.prestamos = prestamos;
+    }
+
     public Ejemplar() {
 
     }

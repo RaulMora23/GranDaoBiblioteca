@@ -21,6 +21,10 @@ public class EjemplarDto implements Serializable {
         estado = estado;
     }
 
+    public EjemplarDto(String isbn, String estado) {
+        Isbn = isbn;
+        this.estado = estado;
+    }
 
     public Integer getId() {
         return id;
