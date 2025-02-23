@@ -1,11 +1,13 @@
-package controlador;
+package org.example.grandaobiblioteca.controlador;
 
-import dto.EjemplarDto;
-import entidad.Ejemplar;
+
+import org.example.grandaobiblioteca.dto.EjemplarDto;
+import org.example.grandaobiblioteca.entidad.Ejemplar;
+import org.example.grandaobiblioteca.servicio.ServicioEjemplar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
-import servicio.ServicioEjemplar;
+
 
 import java.util.List;
 
@@ -55,21 +57,12 @@ public class EjemplarControlador {
 
     // 📤 Actualizar EjemplarDto en JSON
     @PutMapping(value = "/JSON", consumes = "application/json", produces = "application/json")
-<<<<<<< HEAD
-    public EjemplarDto actualizarJSON(@RequestBody EjemplarDto ejemplar) {
-        servicioEjemplar.actualizarEjemplar(ejemplar);
-        return ejemplar;
-=======
+
     public Ejemplar actualizarJSON(@RequestBody EjemplarDto ejemplar) {
         return servicioEjemplar.obtenerEntidad(ejemplar);
->>>>>>> b5dc4583e23fb2ed6107aa1c251bad372401c9ae
+
     }
 
-    // 📤 Actualizar EjemplarDto en Texto Plano
-    @PutMapping(value = "/Texto", consumes = "text/plain", produces = "text/plain")
-    public String actualizarTexto(@RequestBody String texto) {
-        return "Ejemplar en Texto (Actualizado): " + texto;
-    }
 
     // 🗑️ Eliminar EjemplarDto por ID
     @DeleteMapping("/{id}")
@@ -89,7 +82,7 @@ public class EjemplarControlador {
         return servicioEjemplar.insertarEjemplarTexto(texto) == true ? texto : null;
 
     }
-    @PutMapping(value = "/Texto", consumes = "text/plain", produces = "text/plain")
+    @PutMapping(value = "/ejemplar/Texto", consumes = "text/plain", produces = "text/plain")
     public String modificarTexto(@Param(value = "texto") String texto){
         return  servicioEjemplar.modificarEjemplarTexto(texto) == true ? texto : null;
     }
