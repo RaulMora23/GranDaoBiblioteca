@@ -22,8 +22,8 @@ public class EjemplarControlador {
 
     // 📥 Recibir y 📤 Devolver EjemplarDto en JSON
     @GetMapping(value = "/JSON", produces = "application/json")
-    public EjemplarDto obtenerJSON() {
-        return new EjemplarDto("Título JSON", "Autor JSON");
+    public List<EjemplarDto> obtenerJSON() {
+        return servicioEjemplar.obtenerEjemplares();
     }
 
 
@@ -86,7 +86,6 @@ public class EjemplarControlador {
     public EjemplarDto agregarTexto(String texto){
         String[] lineas = texto.split(",");
         EjemplarDto ejemplarDto = new EjemplarDto(Integer.parseInt(lineas[0]), lineas[1], lineas[2]);
-
         boolean valido = servicioEjemplar.insertarEjemplar(ejemplarDto);
 
         if(valido){
@@ -94,7 +93,6 @@ public class EjemplarControlador {
         }else{
             return null;
         }
-
     }
     @PutMapping(value = "/Texto", consumes = "text/plain", produces = "text/plain")
     public EjemplarDto modificarTexto(String texto){
