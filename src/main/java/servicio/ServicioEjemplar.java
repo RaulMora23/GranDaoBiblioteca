@@ -44,7 +44,6 @@ public class ServicioEjemplar {
         String[] datos = ejemplar.split(",");
         return new EjemplarDto(Integer.parseInt(datos[0]),datos[1],datos[2]);
     }
-    public String 
 
     public EjemplarDto obtenerDTO(Ejemplar ejemplar){
         return new EjemplarDto(ejemplar.getId(),ejemplar.getIsbn().getIsbn(),ejemplar.getEstado());

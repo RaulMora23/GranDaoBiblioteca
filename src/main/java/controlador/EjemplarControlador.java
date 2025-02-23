@@ -26,15 +26,7 @@ public class EjemplarControlador {
         return new EjemplarDto("Título JSON", "Autor JSON");
     }
 
-    // 📥 Recibir y 📤 Devolver EjemplarDto en Texto Plano
-    @GetMapping(value = "/Texto", produces = "text/plain")
-    public String obtenerTexto() {
-        servicioEjemplar.obtenerEjemplares();
-        for (EjemplarDto e : servicioEjemplar.obtenerEjemplares()) {
-            servicioEjemplar
-        }
-        return r;
-    }
+
 
     // 📤 Crear EjemplarDto en XML
     @PostMapping(value = "/XML", consumes = "application/xml", produces = "application/xml")
@@ -52,11 +44,6 @@ public class EjemplarControlador {
         return ejemplar;
     }
 
-    // 📤 Crear EjemplarDto en Texto Plano
-    @PostMapping(value = "/Texto", consumes = "text/plain", produces = "text/plain")
-    public String crearTexto(@RequestBody String texto) {
-        return texto;
-    }
 
     // 📤 Actualizar EjemplarDto en XML
     @PutMapping(value = "/XML", consumes = "application/xml", produces = "application/xml")
@@ -81,4 +68,57 @@ public class EjemplarControlador {
     public String eliminar(@PathVariable String id) {
         return "Ejemplar con ID " + id + " eliminado";
     }
+
+    // Metodos Por texto
+
+    // 📥 Recibir y 📤 Devolver EjemplarDto en Texto Plano
+    @GetMapping(value = "/Texto", produces = "text/plain")
+    public String obtenerTexto() {
+        List<EjemplarDto> lista = servicioEjemplar.obtenerEjemplares();
+        StringBuilder texto = new StringBuilder();
+        for (EjemplarDto ejemplar : lista){
+            texto.append(ejemplar.toString());
+            return texto.toString();
+        }
+        return texto.toString();
+    }
+    @PostMapping(value = "/Texto", consumes = "text/plain", produces = "text/plain")
+    public EjemplarDto agregarTexto(String texto){
+        String[] lineas = texto.split(",");
+        EjemplarDto ejemplarDto = new EjemplarDto(Integer.parseInt(lineas[0]), lineas[1], lineas[2]);
+
+        boolean valido = servicioEjemplar.insertarEjemplar(ejemplarDto);
+
+        if(valido){
+            return ejemplarDto;
+        }else{
+            return null;
+        }
+
+    }
+    @PutMapping(value = "/Texto", consumes = "text/plain", produces = "text/plain")
+    public EjemplarDto modificarTexto(String texto){
+        String[] lineas = texto.split(",");
+        EjemplarDto ejemplarDto = new EjemplarDto(Integer.parseInt(lineas[0]), lineas[1], lineas[2]);
+        boolean valido = servicioEjemplar.actualizarEjemplar(ejemplarDto);
+        if(valido){
+            return ejemplarDto;
+        }else{
+            return null;
+        }
+    }
+    public EjemplarDto eliminarTexto(String texto){
+        String[] lineas = texto.split(",");
+        EjemplarDto ejemplarDto = new EjemplarDto(Integer.parseInt(lineas[0]), lineas[1], lineas[2]);
+        boolean valido = servicioEjemplar.eliminarEjemplar(ejemplarDto.getId());
+        if (valido){
+            return ejemplarDto;
+        }else{
+            return null;
+        }
+    }
+
+
+
+
 }

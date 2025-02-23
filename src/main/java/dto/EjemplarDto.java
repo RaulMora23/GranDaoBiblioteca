@@ -29,5 +29,10 @@ public class EjemplarDto implements Serializable {
     public String getEstado() {
         return estado;
     }
+
+    @Override
+    public String toString() {
+        return id + "," +Isbn + "," + estado + '\n';
+    }
 }
 
