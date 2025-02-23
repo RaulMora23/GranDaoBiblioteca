@@ -2,6 +2,8 @@ package org.example.grandaobiblioteca.servicio;
 
 
 import org.example.grandaobiblioteca.entidad.Libro;
+import org.example.grandaobiblioteca.entidad.LibroMongo;
+import org.example.grandaobiblioteca.repositorio.LibroMongoRepo;
 import org.example.grandaobiblioteca.repositorio.LibroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +16,12 @@ public class LibroServicio {
 
     @Autowired
     private LibroRepository libroRepo;
+    @Autowired
+    private LibroMongoRepo mongo;
 
     public boolean addLibro(Libro libro){
         try {
+            mongo.save(new LibroMongo(libro));
             libroRepo.save(libro);
             return true;
         } catch (Exception e) {
@@ -25,16 +30,17 @@ public class LibroServicio {
     }
     public boolean deleteLibro(String isbn){
         try{
+            mongo.deleteById(isbn);
             libroRepo.deleteById(isbn);
             return true;
         } catch (Exception e){
             return false;
         }
     }
-    public Boolean updateLibro(Libro libro, String isbn) {
+    public Boolean updateLibro(Libro libro) {
         try {
             // Buscar el libro por el ISBN proporcionado
-            Optional<Libro> libroExistente = libroRepo.findById(isbn);
+            Optional<Libro> libroExistente = libroRepo.findById(libro.getIsbn());
 
             if (libroExistente.isPresent()) {
                 // Obtener el libro existente
@@ -46,6 +52,7 @@ public class LibroServicio {
                 existingLibro.setEjemplars(libro.getEjemplars());
 
                 // Guardar los cambios en el repositorio
+                mongo.save(new LibroMongo(existingLibro));
                 libroRepo.save(existingLibro);
                 return true;
             } else {
@@ -90,15 +97,14 @@ public class LibroServicio {
         String[] linea = texto.split(",");
         Libro libro = new Libro(linea[0], linea[1], linea[2]);
         boolean valor = this.addLibro(libro);
+        mongo.save(new LibroMongo(libro));
         return valor == true ? "Libro añadido" : "Error al añadir el libro";
     }
-    public String updateLibroText(String texto, String isbn){
+    public String updateLibroText(String texto){
         String[] linea = texto.split(",");
         Libro libro = new Libro(linea[0], linea[1], linea[2]);
-        boolean valor = this.updateLibro(libro, isbn);
+        boolean valor = this.updateLibro(libro);
+        mongo.save(new LibroMongo(libro));
         return valor == true ? "Libro actualizado" : "Error al actualizar el libro";
     }
-
-
-
 }

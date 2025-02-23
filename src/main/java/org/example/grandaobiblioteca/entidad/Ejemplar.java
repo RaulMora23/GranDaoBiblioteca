@@ -4,12 +4,15 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.example.grandaobiblioteca.repositorio.LibroRepository;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+
 
 @Entity
 @Table(name = "ejemplar")
@@ -81,8 +84,15 @@ public class Ejemplar {
         this.prestamos = prestamos;
     }
 
+<<<<<<< Updated upstream
     @Override
     public String toString() {
         return id + "," + isbn.getIsbn() + "," + estado + "\n";
+=======
+    public Ejemplar(Integer id, Libro isbn, String estado) {
+        this.id = id;
+        this.isbn = isbn;
+        this.estado = estado;
+>>>>>>> Stashed changes
     }
 }
