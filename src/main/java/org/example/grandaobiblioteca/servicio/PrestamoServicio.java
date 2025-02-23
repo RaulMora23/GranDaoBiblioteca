@@ -3,10 +3,7 @@ package org.example.grandaobiblioteca.servicio;
 
 import org.example.grandaobiblioteca.entidad.Prestamo;
 import org.example.grandaobiblioteca.entidad.PrestamoMongo;
-import org.example.grandaobiblioteca.repositorio.PrestamoMongoRepo;
-import org.example.grandaobiblioteca.repositorio.PrestamoRepository;
-import org.example.grandaobiblioteca.repositorio.LibroRepository;
-import org.example.grandaobiblioteca.repositorio.UsuarioRepository;
+import org.example.grandaobiblioteca.repositorio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,12 +21,15 @@ public class PrestamoServicio {
     @Autowired
     private PrestamoMongoRepo mongo;
     @Autowired
+    private EjemplarRepository ejemplarRepo;
+    @Autowired
     private UsuarioRepository usuarioRepo;
     @Autowired
     private LibroRepository libroRepo;
 
     public boolean addPrestamo(Prestamo prestamo){
         try {
+
             prestamoRepo.save(prestamo);
             mongo.save(new PrestamoMongo(prestamo));
             return true;

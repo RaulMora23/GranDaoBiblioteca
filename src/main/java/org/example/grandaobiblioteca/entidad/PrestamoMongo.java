@@ -27,7 +27,13 @@ public class PrestamoMongo {
     public PrestamoMongo(Prestamo prestamo){
         this.id=prestamo.getId().toString();
         this.usuario = new UsuarioMongo(prestamo.getUsuario());
-        this.ejemplar = new EjemplarMongo(prestamo.getEjemplar());
+        try{
+            this.ejemplar = new EjemplarMongo(prestamo.getEjemplar());
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
         this.fechaInicio = prestamo.getFechaInicio();
         this.fechaDevolucion = prestamo.getFechaDevolucion();
     }
