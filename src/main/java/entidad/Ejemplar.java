@@ -41,4 +41,8 @@ public class Ejemplar {
         this.estado = estado;
         this.prestamos = prestamos;
     }
+
+    public Ejemplar() {
+
+    }
 }

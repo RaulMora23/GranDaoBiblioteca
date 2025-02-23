@@ -5,7 +5,7 @@ import entidad.Prestamo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repositorio.EjemplarRepository;
-import repositorio.PrestamoMongo;
+import repositorio.PrestamoMongoRepo;
 import repositorio.PrestamoRepository;
 import repositorio.UsuarioRepository;
 
@@ -19,7 +19,7 @@ public class ServicioPrestamo {
     @Autowired
     PrestamoRepository repo;
     @Autowired
-    PrestamoMongo mongo;
+    PrestamoMongoRepo mongo;
     @Autowired
     UsuarioRepository usuarioRepo;
     @Autowired

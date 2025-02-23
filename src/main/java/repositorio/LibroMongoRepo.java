@@ -1,9 +1,10 @@
 package repositorio;
 
-import entidad.Ejemplar;
+import entidad.Libro;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EjemplarMongo extends MongoRepository<Ejemplar, Integer> {
+public interface LibroMongoRepo extends MongoRepository<Libro,String> {
+    Libro getByIsbn(String isbn);
 }

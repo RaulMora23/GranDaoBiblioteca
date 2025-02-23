@@ -2,13 +2,10 @@ package servicio;
 
 import dto.EjemplarDto;
 import entidad.Ejemplar;
-import entidad.Libro;
+import entidad.EjemplarMongo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repositorio.EjemplarMongo;
-import repositorio.EjemplarRepository;
-import repositorio.LibroMongo;
-import repositorio.LibroRepository;
+import repositorio.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +16,20 @@ public class ServicioEjemplar {
     @Autowired
     EjemplarRepository repo;
     @Autowired
-    EjemplarMongo mongo;
+    EjemplarMongoRepo mongo;
     @Autowired
     LibroRepository libroRepo;
+    @Autowired
+    LibroMongoRepo libroMongoRepo;
+    @Autowired
+    PrestamoRepository prestamoRepo;
+    @Autowired
+    PrestamoMongoRepo prestamoMongoRepo;
 
     public boolean validarEjemplar(EjemplarDto ejemplarDto){
+        if (ejemplarDto.getEstado()!="Disponible" && ejemplarDto.getEstado()!="Dañado"&&ejemplarDto.getEstado()!="Prestado"){
+            return false;
+        }
         String isbn = ejemplarDto.getIsbn();
         isbn = isbn.replaceAll("-","");
         int i = 1;
@@ -49,18 +55,25 @@ public class ServicioEjemplar {
         return false;
     }
 
-    public EjemplarDto obtenerDeString(String ejemplar){
-        ejemplar = ejemplar.replaceAll("\\(","");
-        ejemplar = ejemplar.replaceAll("\\)","");
-        String[] datos = ejemplar.split(",");
-        return new EjemplarDto(Integer.parseInt(datos[0]),datos[1],datos[2]);
-    }
-
+    //Conversiones
     public EjemplarDto obtenerDTO(Ejemplar ejemplar){
         return new EjemplarDto(ejemplar.getId(),ejemplar.getIsbn().getIsbn(),ejemplar.getEstado());
     }
     public Ejemplar obtenerEntidad(EjemplarDto ejemplarDto){
-        return new Ejemplar(ejemplarDto.getId(),libroRepo.findBy(ejemplarDto.getIsbn()),);
+        try {
+            return new Ejemplar(ejemplarDto.getId(),libroRepo.getByIsbn(ejemplarDto.getIsbn()),ejemplarDto.getEstado(),prestamoRepo.getByEjemplar_Id(ejemplarDto.getId()));
+        }catch (Exception e){
+            System.out.println("No se pudo instanciar Ejemplar");
+        }
+        return null;
+    }
+    public EjemplarMongo obtenerMongo(EjemplarDto ejemplarDto){
+        try{
+            return new EjemplarMongo(ejemplarDto.getId(),libroMongoRepo.getByIsbn(ejemplarDto.getIsbn()),ejemplarDto.getEstado(),prestamoMongoRepo.getByEjemplar_Id(ejemplarDto.getId()));
+        }catch (Exception e){
+            System.out.println("No se pudo instanciar EjemplarMongo");
+        }
+        return null;
     }
 
     public List<EjemplarDto> obtenerEjemplares(){
@@ -90,7 +103,6 @@ public class ServicioEjemplar {
     }
     public boolean actualizarEjemplar(EjemplarDto ejemplarDto , int id){
         try {
-            ejemplarDto.se
             mongo.save(obtenerEntidad(ejemplarDto));
             repo.save(obtenerEntidad(ejemplarDto));
         }catch (Exception e){

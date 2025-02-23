@@ -4,6 +4,9 @@ import entidad.Prestamo;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Set;
+
 @Repository
-public interface PrestamoMongo extends MongoRepository<Prestamo,Integer> {
+public interface PrestamoMongoRepo extends MongoRepository<Prestamo,Integer> {
+    Set<Prestamo> getByEjemplar_Id(Integer ejemplarId);
 }

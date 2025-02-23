@@ -4,7 +4,7 @@ import dto.LibroDto;
 import entidad.Libro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repositorio.LibroMongo;
+import repositorio.LibroMongoRepo;
 import repositorio.LibroRepository;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class ServicioLibro {
     @Autowired
     LibroRepository repo;
     @Autowired
-    LibroMongo mongo;
+    LibroMongoRepo mongo;
 
     public boolean validarLibro(LibroDto libroDto){
         String isbn = libroDto.getIsbn();

@@ -21,9 +21,15 @@ public class EjemplarMongo {
 
     @DBRef
     private Libro isbn;
-
+    @ColumnDefault("'Disponible'")
     private String estado;
-
+    @DBRef
     private Set<Prestamo> prestamos = new LinkedHashSet<>();
 
+    public EjemplarMongo(Integer id, Libro isbn, String estado, Set<Prestamo> prestamos) {
+        this.id = id;
+        this.isbn = isbn;
+        this.estado = estado;
+        this.prestamos = prestamos;
+    }
 }

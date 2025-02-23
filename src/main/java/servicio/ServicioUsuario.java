@@ -4,7 +4,7 @@ import dto.UsuarioDto;
 import entidad.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repositorio.UsuarioMongo;
+import repositorio.UsuarioMongoRepo;
 import repositorio.UsuarioRepository;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class ServicioUsuario {
     UsuarioRepository repo;
 
     @Autowired
-    UsuarioMongo mongo;
+    UsuarioMongoRepo mongo;
 
     public boolean validarUsuario(UsuarioDto usuarioDto){
         ArrayList<String> listaLetras = new ArrayList<>(Arrays.asList("T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"));
