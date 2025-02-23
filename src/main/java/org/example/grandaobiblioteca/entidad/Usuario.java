@@ -55,7 +55,7 @@ public class Usuario {
     @Column(name = "tipo", nullable = false)
     private String tipo;
 
-    @Column(name = "penalizacionHasta")
+    @Column(name = "penalizacion_hasta")
     private LocalDate penalizacionHasta;
 
     @OneToMany(mappedBy = "usuario")
