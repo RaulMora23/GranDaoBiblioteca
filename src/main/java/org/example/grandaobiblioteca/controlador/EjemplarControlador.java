@@ -32,9 +32,9 @@ public class EjemplarControlador {
         return ejemplarServicio.addEjemplar(ejemplar) == true ? ResponseEntity.ok(ejemplar) : null;
     }
 
-    @PutMapping(value = "/JSON/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Ejemplar> updateEjemplar(@RequestBody Ejemplar Ejemplar, @PathVariable int id) {
-        return ejemplarServicio.updateEjemplar(Ejemplar, id) == true ? ResponseEntity.ok(Ejemplar) : null;
+    @PutMapping(value = "/JSON", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Ejemplar> updateEjemplar(@RequestBody Ejemplar Ejemplar) {
+        return ejemplarServicio.updateEjemplar(Ejemplar) == true ? ResponseEntity.ok(Ejemplar) : null;
     }
 
     @DeleteMapping("/{id}")
@@ -56,9 +56,9 @@ public class EjemplarControlador {
     public ResponseEntity<Ejemplar> addEjemplarXML(@RequestBody Ejemplar Ejemplar) {
         return ejemplarServicio.addEjemplar(Ejemplar) == true ? ResponseEntity.ok(Ejemplar) : null;
     }
-    @PutMapping(value = "/XML/{id}",consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<Ejemplar> updateEjemplarXML(@RequestBody Ejemplar Ejemplar, @PathVariable int id){
-        return ejemplarServicio.updateEjemplar(Ejemplar, id) == true ? ResponseEntity.ok(Ejemplar) : null;
+    @PutMapping(value = "/XML",consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<Ejemplar> updateEjemplarXML(@RequestBody Ejemplar Ejemplar){
+        return ejemplarServicio.updateEjemplar(Ejemplar) == true ? ResponseEntity.ok(Ejemplar) : null;
     }
 
     // Texto
@@ -74,8 +74,8 @@ public class EjemplarControlador {
         return ejemplarServicio.addEjemplarText(texto);
     }
     @PutMapping(value = "/TEXT/{isbn}", produces = MediaType.TEXT_PLAIN_VALUE)
-    public String updateEjemplarText(@RequestBody String texto, @PathVariable int id){
-        return ejemplarServicio.updateEjemplarText(texto, id);
+    public String updateEjemplarText(@RequestBody String texto){
+        return ejemplarServicio.updateEjemplarText(texto);
     }
 
 }

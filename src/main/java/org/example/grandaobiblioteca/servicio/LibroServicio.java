@@ -57,7 +57,7 @@ public class LibroServicio {
                 return true;
             } else {
                 // Si no se encuentra el libro, devolver false
-                System.out.println("Libro con ISBN " + isbn + " no encontrado.");
+                System.out.println("Libro con ISBN " + libro.getIsbn() + " no encontrado.");
                 return false;
             }
         } catch (Exception e) {

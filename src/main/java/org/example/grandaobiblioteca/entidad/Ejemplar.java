@@ -49,6 +49,7 @@ public class Ejemplar {
         this.estado = estado;
     }
 
+
     public Ejemplar() {
     }
 
@@ -84,15 +85,11 @@ public class Ejemplar {
         this.prestamos = prestamos;
     }
 
-<<<<<<< Updated upstream
+
     @Override
     public String toString() {
         return id + "," + isbn.getIsbn() + "," + estado + "\n";
-=======
-    public Ejemplar(Integer id, Libro isbn, String estado) {
-        this.id = id;
-        this.isbn = isbn;
-        this.estado = estado;
->>>>>>> Stashed changes
     }
+
+
 }

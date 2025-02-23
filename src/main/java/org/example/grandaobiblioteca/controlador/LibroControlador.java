@@ -32,9 +32,9 @@ public class LibroControlador {
         return libroServicio.addLibro(libro) == true ? ResponseEntity.ok(libro) : null;
     }
 
-    @PutMapping(value = "/JSON/{isbn}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Libro> updateLibro(@RequestBody Libro libro, @PathVariable String isbn) {
-        return libroServicio.updateLibro(libro, isbn) == true ? ResponseEntity.ok(libro) : null;
+    @PutMapping(value = "/JSON", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Libro> updateLibro(@RequestBody Libro libro) {
+        return libroServicio.updateLibro(libro) == true ? ResponseEntity.ok(libro) : null;
     }
 
     @DeleteMapping("/JSON/{isbn}")
@@ -56,9 +56,9 @@ public class LibroControlador {
     public ResponseEntity<Libro> addLibroXML(@RequestBody Libro libro) {
         return libroServicio.addLibro(libro) == true ? ResponseEntity.ok(libro) : null;
     }
-    @PutMapping(value = "/XML/{isbn}", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<Libro> updateLibroXML(@RequestBody Libro libro, @PathVariable String isbn){
-        return libroServicio.updateLibro(libro, isbn) == true ? ResponseEntity.ok(libro) : null;
+    @PutMapping(value = "/XML", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<Libro> updateLibroXML(@RequestBody Libro libro){
+        return libroServicio.updateLibro(libro) == true ? ResponseEntity.ok(libro) : null;
     }
     @DeleteMapping(value = "/XML/{isbn}", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Libro> deleteLibroXML(@PathVariable String isbn) {
@@ -82,7 +82,7 @@ public class LibroControlador {
     }
     @PutMapping(value = "/TEXT/{isbn}", produces = MediaType.TEXT_PLAIN_VALUE)
     public String updateLibroText(@RequestBody String texto, @PathVariable String isbn){
-        return libroServicio.updateLibroText(texto, isbn);
+        return libroServicio.updateLibroText(texto);
     }
 
 }
