@@ -19,18 +19,21 @@ public class EjemplarDto implements Serializable {
     @XmlElement
     Integer id;
     @XmlElement
-    String Isbn;
+    String isbn;
     @XmlElement
     String estado;
 
     public EjemplarDto(int i, String isbn, String estado) {
         this.id = i;
-        Isbn = isbn;
-        estado = estado;
+        this.isbn = isbn;
+        this.estado = estado;
+    }
+    public EjemplarDto() {
     }
 
+
     public EjemplarDto(String isbn, String estado) {
-        Isbn = isbn;
+        isbn = isbn;
         this.estado = estado;
     }
 
@@ -39,7 +42,7 @@ public class EjemplarDto implements Serializable {
     }
 
     public String getIsbn() {
-        return Isbn;
+        return isbn;
     }
 
     public String getEstado() {
@@ -48,7 +51,7 @@ public class EjemplarDto implements Serializable {
 
     @Override
     public String toString() {
-        return id + "," +Isbn + "," + estado + '\n';
+        return id + "," +isbn + "," + estado + '\n';
     }
 }
 

@@ -45,7 +45,7 @@ public class EjemplarControlador {
     // 📤 Crear EjemplarDto en JSON
     @PostMapping(value = "/JSON", consumes = "application/json", produces = "application/json")
     public EjemplarDto crearJSON(@RequestBody EjemplarDto ejemplar) {
-        return ejemplar;
+        return servicioEjemplar.insertarEjemplar(ejemplar) ? ejemplar : null;
     }
 
 

@@ -95,9 +95,10 @@ public class ServicioEjemplar {
     public boolean insertarEjemplar(EjemplarDto ejemplarDto) {
         try {
             repo.save(obtenerEntidad(ejemplarDto));
-            mongo.save(obtenerMongo(ejemplarDto));
+           // mongo.save(obtenerMongo(ejemplarDto));
         } catch (Exception e) {
-            return false;
+            System.out.println(e.getMessage());
+        return false;
         }
         return true;
     }

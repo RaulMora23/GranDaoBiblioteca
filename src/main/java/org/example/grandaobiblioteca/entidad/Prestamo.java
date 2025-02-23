@@ -28,10 +28,10 @@ public class Prestamo {
     @JoinColumn(name = "ejemplar_id", nullable = false)
     private Ejemplar ejemplar;
 
-    @Column(name = "fechaInicio", nullable = false)
+    @Column(name = "fecha_Inicio", nullable = false)
     private LocalDate fechaInicio;
 
-    @Column(name = "fechaDevolucion")
+    @Column(name = "fecha_Devolucion")
     private LocalDate fechaDevolucion;
 
 }
