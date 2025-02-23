@@ -6,19 +6,27 @@ import org.example.grandaobiblioteca.entidad.PrestamoMongo;
 import org.example.grandaobiblioteca.repositorio.PrestamoMongoRepo;
 import org.example.grandaobiblioteca.repositorio.PrestamoRepository;
 import org.example.grandaobiblioteca.repositorio.LibroRepository;
+import org.example.grandaobiblioteca.repositorio.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ServicioPrestamo {
+public class PrestamoServicio {
 
     @Autowired
     private PrestamoRepository prestamoRepo;
     @Autowired
     private PrestamoMongoRepo mongo;
+    @Autowired
+    private UsuarioRepository usuarioRepo;
+    @Autowired
+    private LibroRepository libroRepo;
 
     public boolean addPrestamo(Prestamo prestamo){
         try {
@@ -70,6 +78,31 @@ public class ServicioPrestamo {
         }
     }
 
+    public String addPrestamoText(String texto){
+        String[] linea = texto.split(",");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Formato de la fecha
+
+        // Convierte el String a LocalDate
+        LocalDate inicio = LocalDate.parse(linea[3], formatter);
+        LocalDate fin = LocalDate.parse(linea[4], formatter);
+
+        Prestamo prestamo = new Prestamo(Integer.parseInt(linea[0]),usuarioRepo.getUsuarioById(Integer.parseInt(linea[1])),libroRepo.getLibroByIsbn(linea[2]),inicio,fin );
+        boolean valor = this.addPrestamo(prestamo);
+        return valor == true ? "Prestamo añadido" : "Error al añadir el prestamo";
+    }
+    public String updatePrestamoText(String texto){
+        String[] linea = texto.split(",");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Formato de la fecha
+
+        // Convierte el String a LocalDate
+        LocalDate inicio = LocalDate.parse(linea[3], formatter);
+        LocalDate fin = LocalDate.parse(linea[4], formatter);
+
+        Prestamo prestamo = new Prestamo(Integer.parseInt(linea[0]),usuarioRepo.getUsuarioById(Integer.parseInt(linea[1])),libroRepo.getLibroByIsbn(linea[2]),inicio,fin );
+        boolean valor = this.updatePrestamo(prestamo);
+        return valor == true ? "Prestamo actualizado" : "Error al actualizar el prestamo";
+    }
 
     public ResponseEntity<Prestamo> findPrestamo(Integer id){
         Prestamo prestamo = prestamoRepo.findById(id).get();
@@ -88,5 +121,4 @@ public class ServicioPrestamo {
         }
         return texto.toString();
     }
-
 }

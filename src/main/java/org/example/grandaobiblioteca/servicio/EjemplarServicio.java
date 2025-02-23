@@ -71,6 +71,18 @@ public class EjemplarServicio {
         }
     }
 
+    public String addEjemplarText(String texto){
+        String[] linea = texto.split(",");
+        Ejemplar ejemplar = new Ejemplar(Integer.parseInt(linea[0]),libroRepo.findById(linea[1]).get(), linea[2]);
+        boolean valor = this.addEjemplar(ejemplar);
+        return valor == true ? "Ejemplar añadido" : "Error al añadir el ejemplar";
+    }
+    public String updateEjemplarText(String texto){
+        String[] linea = texto.split(",");
+        Ejemplar ejemplar = new Ejemplar(Integer.parseInt(linea[0]),libroRepo.findById(linea[1]).get(), linea[2]);
+        boolean valor = this.updateEjemplar(ejemplar);
+        return valor == true ? "Ejemplar actualizado" : "Error al actualizar el ejemplar";
+    }
 
     public ResponseEntity<Ejemplar> findEjemplar(Integer id){
         Ejemplar ejemplar = ejemplarRepo.findById(id).get();
@@ -88,19 +100,5 @@ public class EjemplarServicio {
             texto.append(ejemplar.toString());
         }
         return texto.toString();
-    }
-
-
-    public String addEjemplarText(String texto){
-        String[] linea = texto.split(",");
-        Ejemplar ejemplar = new Ejemplar(Integer.parseInt(linea[0]),libroRepo.findById(linea[1]).get(), linea[2]);
-        boolean valor = this.addEjemplar(ejemplar);
-        return valor == true ? "Ejemplar añadido" : "Error al añadir el ejemplar";
-    }
-    public String updateEjemplarText(String texto){
-        String[] linea = texto.split(",");
-        Ejemplar ejemplar = new Ejemplar(Integer.parseInt(linea[0]),libroRepo.findById(linea[1]).get(), linea[2]);
-        boolean valor = this.updateEjemplar(ejemplar);
-        return valor == true ? "Ejemplar actualizado" : "Error al actualizar el ejemplar";
     }
 }

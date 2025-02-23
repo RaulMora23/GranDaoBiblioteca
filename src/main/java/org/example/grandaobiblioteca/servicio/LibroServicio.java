@@ -66,7 +66,18 @@ public class LibroServicio {
             return false;
         }
     }
-
+    public String addLibroText(String texto){
+        String[] linea = texto.split(",");
+        Libro libro = new Libro(linea[0], linea[1], linea[2]);
+        boolean valor = this.addLibro(libro);
+        return valor == true ? "Libro añadido" : "Error al añadir el libro";
+    }
+    public String updateLibroText(String texto){
+        String[] linea = texto.split(",");
+        Libro libro = new Libro(linea[0], linea[1], linea[2]);
+        boolean valor = this.updateLibro(libro);
+        return valor == true ? "Libro actualizado" : "Error al actualizar el libro";
+    }
 
     public ResponseEntity<Libro> findLibro(String isbn){
         Libro libro = libroRepo.findById(isbn).get();
@@ -86,25 +97,5 @@ public class LibroServicio {
             texto.append(libro.toString());
         }
         return texto.toString();
-    }
-
-    public String findByLibroTexto(String isbn){
-        Libro libro = this.findLibro(isbn).getBody();
-        return libro.toString();
-    }
-
-    public String addLibroText(String texto){
-        String[] linea = texto.split(",");
-        Libro libro = new Libro(linea[0], linea[1], linea[2]);
-        boolean valor = this.addLibro(libro);
-        mongo.save(new LibroMongo(libro));
-        return valor == true ? "Libro añadido" : "Error al añadir el libro";
-    }
-    public String updateLibroText(String texto){
-        String[] linea = texto.split(",");
-        Libro libro = new Libro(linea[0], linea[1], linea[2]);
-        boolean valor = this.updateLibro(libro);
-        mongo.save(new LibroMongo(libro));
-        return valor == true ? "Libro actualizado" : "Error al actualizar el libro";
     }
 }
