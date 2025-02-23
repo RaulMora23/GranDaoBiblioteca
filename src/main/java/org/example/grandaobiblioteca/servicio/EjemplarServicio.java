@@ -1,8 +1,8 @@
 package org.example.grandaobiblioteca.servicio;
 
+
 import org.example.grandaobiblioteca.entidad.Ejemplar;
 import org.example.grandaobiblioteca.entidad.EjemplarMongo;
-import org.example.grandaobiblioteca.entidad.Libro;
 import org.example.grandaobiblioteca.repositorio.EjemplarMongoRepo;
 import org.example.grandaobiblioteca.repositorio.EjemplarRepository;
 import org.example.grandaobiblioteca.repositorio.LibroRepository;
@@ -18,106 +18,89 @@ public class EjemplarServicio {
     @Autowired
     private EjemplarRepository ejemplarRepo;
 
-    @Autowired
     private EjemplarMongoRepo mongo;
 
     @Autowired
     private LibroRepository libroRepo;
-
-    public boolean addEjemplar(Ejemplar ejemplar) {
+    public boolean addEjemplar(Ejemplar ejemplar){
         try {
             ejemplarRepo.save(ejemplar);
             mongo.save(new EjemplarMongo(ejemplar));
             return true;
         } catch (Exception e) {
-            System.err.println("Error al añadir ejemplar: " + e.getMessage());
             return false;
         }
     }
-
-    public boolean deleteEjemplar(int id) {
-        try {
+    public boolean deleteEjemplar(Integer id){
+        try{
             ejemplarRepo.deleteById(id);
+            mongo.deleteById(id);
             return true;
-        } catch (Exception e) {
-            System.err.println("Error al eliminar ejemplar: " + e.getMessage());
+        } catch (Exception e){
             return false;
         }
     }
-
-    public boolean updateEjemplar(Ejemplar ejemplar) {
+    public Boolean updateEjemplar(Ejemplar ejemplar) {
         try {
+            // Buscar el ejemplar por el ISBN proporcionado
             Optional<Ejemplar> ejemplarExistente = ejemplarRepo.findById(ejemplar.getId());
+
             if (ejemplarExistente.isPresent()) {
+                //no hace falta existingE es igual a ejemplar
+                /* Obtener el ejemplar existente
+                Ejemplar existingEjemplar = ejemplarExistente.get();
+
+                // No modificar el ISBN
+                existingEjemplar.setAutor(ejemplar.getAutor());
+                existingEjemplar.setTitulo(ejemplar.getTitulo());
+                existingEjemplar.setEjemplars(ejemplar.getEjemplars());*/
+
+                // Guardar los cambios en el repositorio
                 ejemplarRepo.save(ejemplar);
                 mongo.save(new EjemplarMongo(ejemplar));
                 return true;
             } else {
-                System.err.println("Ejemplar con ID " + ejemplar.getId() + " no encontrado.");
+                // Si no se encuentra el ejemplar, devolver false
+                //System.out.println("Ejemplar con ISBN " + isbn + " no encontrado.");
                 return false;
             }
         } catch (Exception e) {
-            System.err.println("Error al actualizar ejemplar: " + e.getMessage());
+            // Registrar la excepción para depuración
+            System.err.println("Error al actualizar el ejemplar: " + e.getMessage());
             return false;
         }
     }
 
-    public ResponseEntity<Ejemplar> findEjemplar(int id) {
-        Optional<Ejemplar> ejemplar = ejemplarRepo.findById(id);
-        return ejemplar.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+
+    public ResponseEntity<Ejemplar> findEjemplar(Integer id){
+        Ejemplar ejemplar = ejemplarRepo.findById(id).get();
+        return ResponseEntity.ok(ejemplar);
+    }
+    public ResponseEntity<List<Ejemplar>> findALL(){
+        List<Ejemplar> ejemplars = ejemplarRepo.findAll();
+        return ResponseEntity.ok(ejemplars);
     }
 
-    public ResponseEntity<List<Ejemplar>> findALL() {
-        List<Ejemplar> ejemplares = ejemplarRepo.findAll();
-        return ResponseEntity.ok(ejemplares);
-    }
-
-    public String findALLText() {
-        List<Ejemplar> ejemplares = findALL().getBody();
-        if (ejemplares == null || ejemplares.isEmpty()) return "No hay ejemplares disponibles.";
+    public String findALLText(){
+        List<Ejemplar> ejemplars = this.findALL().getBody();
         StringBuilder texto = new StringBuilder();
-        for (Ejemplar ejemplar : ejemplares) {
-            texto.append(ejemplar.toString()).append("\n");
+        for (Ejemplar ejemplar : ejemplars) {
+            texto.append(ejemplar.toString());
         }
         return texto.toString();
     }
 
-    public String findByEjemplarTexto(int id) {
-        Optional<Ejemplar> ejemplar = ejemplarRepo.findById(id);
-        return ejemplar.map(Ejemplar::toString)
-                .orElse("Ejemplar no encontrado.");
-    }
 
-    public String addEjemplarText(String texto) {
-        try {
-            String[] linea = texto.split(",");
-            Optional<Libro> libroOpt = libroRepo.findById(linea[0]);
-            if (libroOpt.isPresent()) {
-                Ejemplar ejemplar = new Ejemplar(libroOpt.get(), linea[1]);
-                boolean resultado = addEjemplar(ejemplar);
-                return resultado ? "Ejemplar añadido correctamente" : "Error al añadir el ejemplar";
-            } else {
-                return "Error: Libro no encontrado";
-            }
-        } catch (Exception e) {
-            return "Error en la entrada de datos: " + e.getMessage();
-        }
+    public String addEjemplarText(String texto){
+        String[] linea = texto.split(",");
+        Ejemplar ejemplar = new Ejemplar(Integer.parseInt(linea[0]),libroRepo.findById(linea[1]).get(), linea[2]);
+        boolean valor = this.addEjemplar(ejemplar);
+        return valor == true ? "Ejemplar añadido" : "Error al añadir el ejemplar";
     }
-
-    public String updateEjemplarText(String texto) {
-        try {
-            String[] linea = texto.split(",");
-            Optional<Libro> libroOpt = libroRepo.findById(linea[0]);
-            if (libroOpt.isPresent()) {
-                Ejemplar ejemplar = new Ejemplar(Integer.parseInt(linea[1]), libroOpt.get(), linea[2]);
-                boolean resultado = updateEjemplar(ejemplar);
-                return resultado ? "Ejemplar actualizado correctamente" : "Error al actualizar el ejemplar";
-            } else {
-                return "Error: Libro no encontrado";
-            }
-        } catch (Exception e) {
-            return "Error en la entrada de datos: " + e.getMessage();
-        }
+    public String updateEjemplarText(String texto){
+        String[] linea = texto.split(",");
+        Ejemplar ejemplar = new Ejemplar(Integer.parseInt(linea[0]),libroRepo.findById(linea[1]).get(), linea[2]);
+        boolean valor = this.updateEjemplar(ejemplar);
+        return valor == true ? "Ejemplar actualizado" : "Error al actualizar el ejemplar";
     }
 }
