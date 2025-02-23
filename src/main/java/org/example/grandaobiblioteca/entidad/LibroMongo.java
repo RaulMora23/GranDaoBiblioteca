@@ -29,4 +29,15 @@ public class LibroMongo {
 
     public LibroMongo() {
     }
+
+    public LibroMongo(Libro isbn) {
+        this.isbn = isbn.getIsbn();
+        this.titulo = isbn.getTitulo();
+        this.autor = isbn.getAutor();
+        Set<EjemplarMongo> ejemplars = new LinkedHashSet<>();
+        for (Ejemplar ejemplar : isbn.getEjemplars()) {
+            ejemplars.add(new EjemplarMongo(ejemplar));
+        }
+        this.ejemplars = ejemplars;
+    }
 }

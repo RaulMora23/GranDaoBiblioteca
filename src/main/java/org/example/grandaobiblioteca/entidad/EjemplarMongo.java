@@ -15,22 +15,35 @@ public class EjemplarMongo {
     private Integer id;
 
     @DBRef
-    private Libro isbn;
+    private LibroMongo isbn;
     @ColumnDefault("'Disponible'")
     private String estado;
     @DBRef
-    private Set<Prestamo> prestamos = new LinkedHashSet<>();
+    private Set<PrestamoMongo> prestamos = new LinkedHashSet<>();
 
-    public EjemplarMongo(Integer id, Libro isbn, String estado, Set<Prestamo> prestamos) {
+    public EjemplarMongo(Integer id, LibroMongo isbn, String estado, Set<PrestamoMongo> prestamos) {
         this.id = id;
         this.isbn = isbn;
         this.estado = estado;
         this.prestamos = prestamos;
     }
 
-    public EjemplarMongo(Libro isbn, String estado, Set<Prestamo> prestamos) {
+    public EjemplarMongo(LibroMongo isbn, String estado, Set<PrestamoMongo> prestamos) {
         this.isbn = isbn;
         this.estado = estado;
+        this.prestamos = prestamos;
+    }
+    public EjemplarMongo() {
+
+    }
+    public EjemplarMongo(Ejemplar ejemplar) {
+        id = ejemplar.getId();
+        isbn = new LibroMongo(ejemplar.getIsbn());
+        estado = ejemplar.getEstado();
+        Set<PrestamoMongo> prestamos = new LinkedHashSet<>();
+        for (Prestamo prestamo : ejemplar.getPrestamos()) {
+            prestamos.add(new PrestamoMongo(prestamo));
+        }
         this.prestamos = prestamos;
     }
 }
