@@ -17,20 +17,20 @@ import java.util.Optional;
 public class PrestamoServicio {
 
     @Autowired
-    private PrestamoRepository prestamoRepo;
+    private PrestamoRepository prestamoRepository;
     @Autowired
-    private PrestamoMongoRepo mongo;
+    private PrestamoMongoRepo prestamoMongoRepo;
     @Autowired
-    private EjemplarRepository ejemplarRepo;
+    private EjemplarRepository ejemplarRepository;
     @Autowired
-    private UsuarioRepository usuarioRepo;
+    private UsuarioRepository usuarioRepository;
     @Autowired
-    private LibroRepository libroRepo;
+    private LibroRepository libroRepository;
 
     public boolean validarPrestamo(Prestamo prestamo){
         try {
-            if (!usuarioRepo.getById(prestamo.getUsuario().getId()).getPenalizacionHasta().isAfter(LocalDate.now())) {
-                if (ejemplarRepo.getById(prestamo.getEjemplar().getId()).getEstado().equals("Disponible")) {
+            if (!usuarioRepository.getById(prestamo.getUsuario().getId()).getPenalizacionHasta().isAfter(LocalDate.now())) {
+                if (ejemplarRepository.getById(prestamo.getEjemplar().getId()).getEstado().equals("Disponible")) {
                     return true;
                 }
             }
@@ -44,8 +44,8 @@ public class PrestamoServicio {
     public boolean addPrestamo(Prestamo prestamo){
         try {
 
-            prestamoRepo.save(prestamo);
-            mongo.save(new PrestamoMongo(prestamo));
+            prestamoRepository.save(prestamo);
+            prestamoMongoRepo.save(new PrestamoMongo(prestamo));
             return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -54,8 +54,8 @@ public class PrestamoServicio {
     }
     public boolean deletePrestamo(Integer id){
         try{
-            prestamoRepo.deleteById(id);
-            mongo.deleteById(id);
+            prestamoRepository.deleteById(id);
+            prestamoMongoRepo.deleteById(id);
             return true;
         } catch (Exception e){
             return false;
@@ -64,7 +64,7 @@ public class PrestamoServicio {
     public Boolean updatePrestamo(Prestamo prestamo) {
         try {
             // Buscar el prestamo por el ISBN proporcionado
-            Optional<Prestamo> prestamoExistente = prestamoRepo.findById(prestamo.getId());
+            Optional<Prestamo> prestamoExistente = prestamoRepository.findById(prestamo.getId());
 
             if (prestamoExistente.isPresent()) {
                 //no hace falta existingE es igual a prestamo
@@ -77,8 +77,8 @@ public class PrestamoServicio {
                 existingPrestamo.setPrestamos(prestamo.getPrestamos());*/
 
                 // Guardar los cambios en el repositorio
-                prestamoRepo.save(prestamo);
-                mongo.save(new PrestamoMongo(prestamo));
+                prestamoRepository.save(prestamo);
+                prestamoMongoRepo.save(new PrestamoMongo(prestamo));
                 return true;
             } else {
                 // Si no se encuentra el prestamo, devolver false
@@ -100,7 +100,7 @@ public class PrestamoServicio {
         LocalDate inicio = LocalDate.parse(linea[3], formatter);
         LocalDate fin = LocalDate.parse(linea[4], formatter);
 
-        Prestamo prestamo = new Prestamo(Integer.parseInt(linea[0]),usuarioRepo.getUsuarioById(Integer.parseInt(linea[1])),libroRepo.getLibroByIsbn(linea[2]),inicio,fin );
+        Prestamo prestamo = new Prestamo(Integer.parseInt(linea[0]), usuarioRepository.getUsuarioById(Integer.parseInt(linea[1])), libroRepository.getLibroByIsbn(linea[2]),inicio,fin );
         if(!validarPrestamo(prestamo)){
             return "Prestamo no valido";
         }
@@ -116,7 +116,7 @@ public class PrestamoServicio {
         LocalDate inicio = LocalDate.parse(linea[3], formatter);
         LocalDate fin = LocalDate.parse(linea[4], formatter);
 
-        Prestamo prestamo = new Prestamo(Integer.parseInt(linea[0]),usuarioRepo.getUsuarioById(Integer.parseInt(linea[1])),libroRepo.getLibroByIsbn(linea[2]),inicio,fin );
+        Prestamo prestamo = new Prestamo(Integer.parseInt(linea[0]), usuarioRepository.getUsuarioById(Integer.parseInt(linea[1])), libroRepository.getLibroByIsbn(linea[2]),inicio,fin );
         if(!validarPrestamo(prestamo)){
             return "Prestamo no valido";
         }
@@ -125,16 +125,16 @@ public class PrestamoServicio {
     }
 
     public ResponseEntity<Prestamo> findPrestamo(Integer id){
-        Prestamo prestamo = prestamoRepo.findById(id).get();
+        Prestamo prestamo = prestamoRepository.findById(id).get();
         return ResponseEntity.ok(prestamo);
     }
-    public ResponseEntity<List<Prestamo>> findALL(){
-        List<Prestamo> prestamos = prestamoRepo.findAll();
+    public ResponseEntity<List<Prestamo>> findALLPrestamo(){
+        List<Prestamo> prestamos = prestamoRepository.findAll();
         return ResponseEntity.ok(prestamos);
     }
 
-    public String findALLText(){
-        List<Prestamo> prestamos = this.findALL().getBody();
+    public String findALLTextPrestamo(){
+        List<Prestamo> prestamos = this.findALLPrestamo().getBody();
         StringBuilder texto = new StringBuilder();
         for (Prestamo prestamo : prestamos) {
             texto.append(prestamo.toString());

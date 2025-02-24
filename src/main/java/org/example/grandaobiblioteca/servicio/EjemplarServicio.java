@@ -129,7 +129,7 @@ public class EjemplarServicio {
         return ResponseEntity.ok(ejemplars);
     }
 
-    public String findALLText(){
+    public String findALLTextEjemplar(){
         List<Ejemplar> ejemplars = this.findALL().getBody();
         StringBuilder texto = new StringBuilder();
         for (Ejemplar ejemplar : ejemplars) {

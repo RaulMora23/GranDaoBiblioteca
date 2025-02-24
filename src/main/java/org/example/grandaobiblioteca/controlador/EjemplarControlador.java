@@ -14,60 +14,60 @@ import java.util.List;
 public class EjemplarControlador {
 
     @Autowired
-    private EjemplarServicio ejemplarServicio;
+    private EjemplarServicio servicio;
     //JSON
 
     @GetMapping("/JSON")
     public ResponseEntity<List<Ejemplar>> findALL(){
-        return ejemplarServicio.findALL();
+        return servicio.findALL();
     }
 
     @GetMapping("/JSON/{id}")
     public ResponseEntity<Ejemplar> findEjemplar(@PathVariable int id){
-        return ejemplarServicio.findEjemplar(id);
+        return servicio.findEjemplar(id);
     }
 
     @PostMapping(value = "/JSON", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Ejemplar> addEjemplar(@RequestBody Ejemplar ejemplar){
-        if(ejemplarServicio.validarEjemplar(ejemplar)) {
-            return ejemplarServicio.addEjemplar(ejemplar) == true ? ResponseEntity.ok(ejemplar) : null;
+        if(servicio.validarEjemplar(ejemplar)) {
+            return servicio.addEjemplar(ejemplar) == true ? ResponseEntity.ok(ejemplar) : null;
         }
         return null;
     }
 
     @PutMapping(value = "/JSON", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Ejemplar> updateEjemplar(@RequestBody Ejemplar ejemplar) {
-        if(ejemplarServicio.validarEjemplar(ejemplar)) {
-            return ejemplarServicio.updateEjemplar(ejemplar) == true ? ResponseEntity.ok(ejemplar) : null;
+        if(servicio.validarEjemplar(ejemplar)) {
+            return servicio.updateEjemplar(ejemplar) == true ? ResponseEntity.ok(ejemplar) : null;
         }
         return null;
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Ejemplar> deleteEjemplar(@PathVariable int id){
-        return ejemplarServicio.deleteEjemplar(id) == true ? ResponseEntity.ok().build() : null;
+        return servicio.deleteEjemplar(id) == true ? ResponseEntity.ok().build() : null;
     }
 
     //XML
 
     @GetMapping(value = "/XML/{id}", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Ejemplar> findEjemplarXML(@PathVariable int id){
-        return ejemplarServicio.findEjemplar(id);
+        return servicio.findEjemplar(id);
     }
     @GetMapping(value = "/XML", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<List<Ejemplar>> findEjemplarALL(){
-        return ejemplarServicio.findALL();
+        return servicio.findALL();
     }
     @PostMapping(value = "/XML", consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Ejemplar> addEjemplarXML(@RequestBody Ejemplar ejemplar) {
-        if(ejemplarServicio.validarEjemplar(ejemplar)) {
-            return ejemplarServicio.addEjemplar(ejemplar) == true ? ResponseEntity.ok(ejemplar) : null;
+        if(servicio.validarEjemplar(ejemplar)) {
+            return servicio.addEjemplar(ejemplar) == true ? ResponseEntity.ok(ejemplar) : null;
         }
         return null;
     }
     @PutMapping(value = "/XML",consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Ejemplar> updateEjemplarXML(@RequestBody Ejemplar Ejemplar){
-        if(ejemplarServicio.validarEjemplar(Ejemplar)) {
-            return ejemplarServicio.updateEjemplar(Ejemplar) == true ? ResponseEntity.ok(Ejemplar) : null;
+        if(servicio.validarEjemplar(Ejemplar)) {
+            return servicio.updateEjemplar(Ejemplar) == true ? ResponseEntity.ok(Ejemplar) : null;
         }
         return null;
     }
@@ -76,15 +76,15 @@ public class EjemplarControlador {
 
     @GetMapping("/TEXT")
     public String findALLText(){
-        return ejemplarServicio.findALLText();
+        return servicio.findALLTextEjemplar();
     }
     @PostMapping(value = "/TEXT", produces = MediaType.TEXT_PLAIN_VALUE)
     public String addEjemplarText(@RequestBody String texto){
-        return ejemplarServicio.addEjemplarText(texto);
+        return servicio.addEjemplarText(texto);
     }
     @PutMapping(value = "/TEXT/{isbn}", produces = MediaType.TEXT_PLAIN_VALUE)
     public String updateEjemplarText(@RequestBody String texto){
-        return ejemplarServicio.updateEjemplarText(texto);
+        return servicio.updateEjemplarText(texto);
     }
 
 }

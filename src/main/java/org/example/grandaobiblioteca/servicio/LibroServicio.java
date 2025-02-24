@@ -1,7 +1,6 @@
 package org.example.grandaobiblioteca.servicio;
 
 
-import org.example.grandaobiblioteca.entidad.Ejemplar;
 import org.example.grandaobiblioteca.entidad.Libro;
 import org.example.grandaobiblioteca.entidad.LibroMongo;
 import org.example.grandaobiblioteca.repositorio.LibroMongoRepo;
@@ -20,7 +19,7 @@ public class LibroServicio {
     @Autowired
     private LibroMongoRepo mongo;
 
-    public boolean validarEjemplar(Libro ejemplar) {
+    public boolean validarLibro(Libro ejemplar) {
 
         String isbn = ejemplar.getIsbn();
         isbn = isbn.replaceAll("-", "");
@@ -97,7 +96,7 @@ public class LibroServicio {
     public String addLibroText(String texto){
         String[] linea = texto.split(",");
         Libro libro = new Libro(linea[0], linea[1], linea[2]);
-        if(!validarEjemplar(libro)){
+        if(!validarLibro(libro)){
             return "Libro no valido";
         }
         boolean valor = this.addLibro(libro);
@@ -106,7 +105,7 @@ public class LibroServicio {
     public String updateLibroText(String texto){
         String[] linea = texto.split(",");
         Libro libro = new Libro(linea[0], linea[1], linea[2]);
-        if(!validarEjemplar(libro)){
+        if(!validarLibro(libro)){
             return "Libro no valido";
         }
         boolean valor = this.updateLibro(libro);
@@ -119,13 +118,13 @@ public class LibroServicio {
 
 
     }
-    public ResponseEntity<List<Libro>> findALL(){
+    public ResponseEntity<List<Libro>> findALLLibro(){
         List<Libro> libros = libroRepo.findAll();
         return ResponseEntity.ok(libros);
     }
 
-    public String findALLText(){
-        List<Libro> libros = this.findALL().getBody();
+    public String findALLTextLibro(){
+        List<Libro> libros = this.findALLLibro().getBody();
         StringBuilder texto = new StringBuilder();
         for (Libro libro : libros) {
             texto.append(libro.toString());

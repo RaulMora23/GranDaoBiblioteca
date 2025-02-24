@@ -14,54 +14,54 @@ import java.util.List;
 public class LibroControlador {
 
     @Autowired
-    private LibroServicio libroServicio;
+    private LibroServicio servicio;
     //JSON
 
     @GetMapping("/JSON")
-    public ResponseEntity<List<Libro>> findALL(){
-        return libroServicio.findALL();
+    public ResponseEntity<List<Libro>> findALLLibros(){
+        return servicio.findALLLibro();
     }
 
     @GetMapping("/JSON/{isbn}")
     public ResponseEntity<Libro> findLibro(@PathVariable String isbn){
-        return libroServicio.findLibro(isbn);
+        return servicio.findLibro(isbn);
     }
 
     @PostMapping(value = "/JSON", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Libro> addLibro(@RequestBody Libro libro){
-        if(libroServicio.validarEjemplar(libro)) {
-            return libroServicio.addLibro(libro) == true ? ResponseEntity.ok(libro) : null;
+        if(servicio.validarLibro(libro)) {
+            return servicio.addLibro(libro) == true ? ResponseEntity.ok(libro) : null;
         }
         return null;
     }
 
     @PutMapping(value = "/JSON", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Libro> updateLibro(@RequestBody Libro libro) {
-        if(libroServicio.validarEjemplar(libro)) {
-            return libroServicio.updateLibro(libro) == true ? ResponseEntity.ok(libro) : null;
+        if(servicio.validarLibro(libro)) {
+            return servicio.updateLibro(libro) == true ? ResponseEntity.ok(libro) : null;
         }
         return null;
     }
 
     @DeleteMapping("/{isbn}")
     public ResponseEntity<Libro> deleteLibro(@PathVariable String isbn){
-        return libroServicio.deleteLibro(isbn) == true ? ResponseEntity.ok().build() : null;
+        return servicio.deleteLibro(isbn) == true ? ResponseEntity.ok().build() : null;
     }
 
     //XML
 
     @GetMapping(value = "/XML/{isbn}", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Libro> findLibroXML(@PathVariable String isbn){
-        return libroServicio.findLibro(isbn);
+        return servicio.findLibro(isbn);
     }
     @GetMapping(value = "/XML", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<List<Libro>> findLibroALL(){
-        return libroServicio.findALL();
+        return servicio.findALLLibro();
     }
     @PostMapping(value = "/XML", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Libro> addLibroXML(@RequestBody Libro libro) {
-        if(libroServicio.validarEjemplar(libro)) {
-            return libroServicio.addLibro(libro) == true ? ResponseEntity.ok(libro) : null;
+        if(servicio.validarLibro(libro)) {
+            return servicio.addLibro(libro) == true ? ResponseEntity.ok(libro) : null;
         }
         return null;
     }
@@ -69,8 +69,8 @@ public class LibroControlador {
 
     @PutMapping(value = "/XML", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Libro> updateLibroXML(@RequestBody Libro libro){
-        if(libroServicio.validarEjemplar(libro)) {
-            return libroServicio.updateLibro(libro) == true ? ResponseEntity.ok(libro) : null;
+        if(servicio.validarLibro(libro)) {
+            return servicio.updateLibro(libro) == true ? ResponseEntity.ok(libro) : null;
         }
         return null;
     }
@@ -78,21 +78,21 @@ public class LibroControlador {
     // Texto
 
     @GetMapping("/TEXT")
-    public String findALLText(){
-        return libroServicio.findALLText();
+    public String findALLTextLibro(){
+        return servicio.findALLTextLibro();
     }
     @GetMapping(value = "/TEXT/{isbn}", produces = MediaType.TEXT_PLAIN_VALUE)
     public String findLibroText(@PathVariable String isbn){
-        return libroServicio.findLibro(isbn).getBody().toString();
+        return servicio.findLibro(isbn).getBody().toString();
     }
 
     @PostMapping(value = "/TEXT", produces = MediaType.TEXT_PLAIN_VALUE)
     public String addLibroText(@RequestBody String texto){
-        return libroServicio.addLibroText(texto);
+        return servicio.addLibroText(texto);
     }
     @PutMapping(value = "/TEXT/{isbn}", produces = MediaType.TEXT_PLAIN_VALUE)
     public String updateLibroText(@RequestBody String texto, @PathVariable String isbn){
-        return libroServicio.updateLibroText(texto);
+        return servicio.updateLibroText(texto);
     }
 
 }
