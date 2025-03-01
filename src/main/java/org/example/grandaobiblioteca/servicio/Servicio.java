@@ -33,6 +33,8 @@ public class Servicio {
     UsuarioMongoRepo usuarioMongoRepo;
     @Autowired
     private LibroRepository libroRepository;
+    @Autowired
+    private XMLLibro xmlLibro;
 
 
     //EJEMPLAR
@@ -191,6 +193,7 @@ public class Servicio {
         try {
             libroMongoRepo.save(new LibroMongo(libro));
             libroRepository.save(libro);
+            xmlLibro.guardarLibro(libro);
             return true;
         } catch (Exception e) {
             return false;
@@ -200,6 +203,7 @@ public class Servicio {
         try{
             libroMongoRepo.deleteById(isbn);
             libroRepository.deleteById(isbn);
+            xmlLibro.eliminarLibro(isbn);
             return true;
         } catch (Exception e){
             return false;
@@ -222,6 +226,7 @@ public class Servicio {
                 // Guardar los cambios en el repositorio
                 libroMongoRepo.save(new LibroMongo(libro));
                 libroRepository.save(libro);
+                xmlLibro.modificarLibro(libro);
                 return true;
             } else {
                 // Si no se encuentra el libro, devolver false

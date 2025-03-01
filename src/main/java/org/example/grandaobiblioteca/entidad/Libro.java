@@ -11,7 +11,6 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 @Entity
 @Table(name = "libro")
 public class Libro {
