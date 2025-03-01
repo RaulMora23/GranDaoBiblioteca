@@ -20,8 +20,6 @@ public class Servicio {
     @Autowired
     EjemplarMongoRepo ejemplarMongoRepo;
     @Autowired
-    LibroRepository ejemplarRepository;
-    @Autowired
     LibroMongoRepo libroMongoRepo;
     @Autowired
     PrestamoRepository prestamoRepository;
@@ -35,6 +33,8 @@ public class Servicio {
     private LibroRepository libroRepository;
     @Autowired
     private XMLLibro xmlLibro;
+    @Autowired
+    private TXTLibro txtLibro;
 
 
     //EJEMPLAR
@@ -118,15 +118,9 @@ public class Servicio {
         }
     }
 
-    public String addEjemplarText(File file) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-        String texto = "";
-        String linea=br.readLine();
-        while (linea !=null){
-            texto = texto + linea+"\n";
-        }
-        String[] lineas = texto.split(",");
-        Ejemplar ejemplar = new Ejemplar(Integer.parseInt(lineas[0]),ejemplarRepository.findById(lineas[1]).get(), lineas[2]);
+    public String addEjemplarText(String texto){
+        String[] linea = texto.split(",");
+        Ejemplar ejemplar = new Ejemplar(Integer.parseInt(linea[0]),libroRepository.findById(linea[1]).get(), linea[2]);
         if(!validarEjemplar(ejemplar)){
             return "Ejemplar no valido";
         }
@@ -135,7 +129,7 @@ public class Servicio {
     }
     public String updateEjemplarText(String texto){
         String[] linea = texto.split(",");
-        Ejemplar ejemplar = new Ejemplar(Integer.parseInt(linea[0]),ejemplarRepository.findById(linea[1]).get(), linea[2]);
+        Ejemplar ejemplar = new Ejemplar(Integer.parseInt(linea[0]),libroRepository.findById(linea[1]).get(), linea[2]);
         if(!validarEjemplar(ejemplar)){
             return "Ejemplar no valido";
         }
@@ -194,6 +188,7 @@ public class Servicio {
             libroMongoRepo.save(new LibroMongo(libro));
             libroRepository.save(libro);
             xmlLibro.guardarLibro(libro);
+            txtLibro.agregarLibro(libro);
             return true;
         } catch (Exception e) {
             return false;
@@ -204,6 +199,7 @@ public class Servicio {
             libroMongoRepo.deleteById(isbn);
             libroRepository.deleteById(isbn);
             xmlLibro.eliminarLibro(isbn);
+            txtLibro.eliminarLibro(isbn);
             return true;
         } catch (Exception e){
             return false;
@@ -227,6 +223,7 @@ public class Servicio {
                 libroMongoRepo.save(new LibroMongo(libro));
                 libroRepository.save(libro);
                 xmlLibro.modificarLibro(libro);
+                txtLibro.actualizarLibro(libro);
                 return true;
             } else {
                 // Si no se encuentra el libro, devolver false
