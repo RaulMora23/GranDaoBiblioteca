@@ -1,5 +1,7 @@
 package org.example.grandaobiblioteca.servicio;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.xml.bind.JAXBException;
 import org.example.grandaobiblioteca.entidad.*;
 import org.example.grandaobiblioteca.repositorio.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,12 @@ public class Servicio {
     private XMLLibro xmlLibro;
     @Autowired
     private TXTLibro txtLibro;
+
+    @PostConstruct//Para métodos init()
+    public void init() throws IOException, JAXBException {
+        txtLibro.persistir(libroRepository.findAll());
+        xmlLibro.persistit(libroRepository.findAll());
+    }
 
 
     //EJEMPLAR

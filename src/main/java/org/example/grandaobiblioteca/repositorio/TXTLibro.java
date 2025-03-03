@@ -1,7 +1,6 @@
 package org.example.grandaobiblioteca.repositorio;
 
 import org.example.grandaobiblioteca.entidad.Libro;
-import org.example.grandaobiblioteca.entidad.LibroDTO;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -11,10 +10,10 @@ import java.util.List;
 @Service
 public class TXTLibro {
     private List<Libro> libros;
-    private File archivo = new File("./archivo.txt");
+    private static File archivo;
+
 
     public List<Libro> getLibros() throws IOException {
-        archivo = new File(archivo.getAbsolutePath() + ".txt");
         libros = new ArrayList<Libro>();
         BufferedReader br = new BufferedReader(new FileReader(archivo));
         String linea;
@@ -28,10 +27,11 @@ public class TXTLibro {
         br.close();
         return libros;
     }
-    private boolean persitir(List<Libro> libros) throws IOException {
-        archivo = new File(archivo.getAbsolutePath() + ".txt");
-        archivo.delete();
-        archivo = new File("./archivo.txt");
+    public boolean persistir(List<Libro> libros) throws IOException {
+        if (archivo!=null) {
+            archivo.delete();
+        }
+        archivo = new File("./libros.txt");
         BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));
         for (Libro libro : libros) {
             bw.write(libro.toString());
@@ -43,7 +43,7 @@ public class TXTLibro {
     public boolean agregarLibro(Libro libro) throws IOException {
         libros = getLibros();
         libros.add(libro);
-        persitir(libros);
+        persistir(libros);
         return true;
     }
     public boolean eliminarLibro(String isbn) throws IOException {
@@ -51,7 +51,7 @@ public class TXTLibro {
         for (Libro libro : libros) {
             if (libro.getIsbn().equals(isbn)) {
                 libros.remove(libro);
-                persitir(libros);
+                persistir(libros);
                 return true;
             }
         }
@@ -62,7 +62,7 @@ public class TXTLibro {
         for (Libro libro2 : libros) {
             if(libro2.getIsbn().equals(libro.getIsbn())) {
                 libros.set(libros.indexOf(libro2), libro);
-                persitir(libros);
+                persistir(libros);
                 return true;
             }
         }

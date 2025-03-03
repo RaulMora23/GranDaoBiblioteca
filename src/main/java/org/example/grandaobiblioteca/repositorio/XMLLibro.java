@@ -10,18 +10,21 @@ import org.example.grandaobiblioteca.entidad.ListaLibros;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class XMLLibro {
-    private File archivoXML;
+    private File archivoXML = new File("./XMLLibro.xml");;
 
     // Constructor vacío
     public XMLLibro() {}
 
+
     // Método para obtener todos los libros del XML
-    public List<LibroDTO> getLibros() throws JAXBException {
-        archivoXML = new File("XMLLibro.xml");
+    public List<LibroDTO> getLibros() throws JAXBException, IOException {
+        archivoXML = new File("./XMLLibro.xml");
         JAXBContext contexto = JAXBContext.newInstance(ListaLibros.class);
         Unmarshaller unmarshaller = contexto.createUnmarshaller();
 
@@ -32,7 +35,7 @@ public class XMLLibro {
 
     // Método para guardar un nuevo libro en el XML
     public boolean guardarLibro(Libro libro) throws JAXBException {
-        archivoXML = new File("XMLLibro.xml");
+        archivoXML = new File("./XMLLibro.xml");
         JAXBContext contexto = JAXBContext.newInstance(ListaLibros.class);
         Unmarshaller unmarshaller = contexto.createUnmarshaller();
         Marshaller marshaller = contexto.createMarshaller();
@@ -57,7 +60,7 @@ public class XMLLibro {
 
     // Método para eliminar un libro por su ISBN
     public boolean eliminarLibro(String Isbn) throws JAXBException {
-        archivoXML = new File("XMLLibro.xml");
+        archivoXML = new File("./XMLLibro.xml");
         JAXBContext contexto = JAXBContext.newInstance(ListaLibros.class);
         Unmarshaller unmarshaller = contexto.createUnmarshaller();
         Marshaller marshaller = contexto.createMarshaller();
@@ -87,7 +90,7 @@ public class XMLLibro {
 
     // Método para modificar un libro
     public boolean modificarLibro(Libro libro) throws JAXBException {
-        archivoXML = new File("XMLLibro.xml");
+        archivoXML = new File("./XMLLibro.xml");
         JAXBContext contexto = JAXBContext.newInstance(ListaLibros.class);
         Unmarshaller unmarshaller = contexto.createUnmarshaller();
         Marshaller marshaller = contexto.createMarshaller();
@@ -113,6 +116,24 @@ public class XMLLibro {
             }
         }
         return false;
+    }
+
+    public void persistit(List<Libro> all) throws JAXBException {
+        List<LibroDTO> listaLibros = new ArrayList<LibroDTO>();
+        for (Libro libro : all) {
+            listaLibros.add(new LibroDTO(libro));
+        }
+        if (archivoXML!=null) {
+            archivoXML.delete();
+        }
+        archivoXML = new File("./XMLLibro.xml");
+        JAXBContext contexto = JAXBContext.newInstance(ListaLibros.class);
+        Marshaller marshaller = contexto.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+        ListaLibros lista = new ListaLibros(listaLibros);
+        marshaller.marshal(lista, archivoXML);
+
     }
 }
 

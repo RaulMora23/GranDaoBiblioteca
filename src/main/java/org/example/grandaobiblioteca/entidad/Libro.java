@@ -1,5 +1,6 @@
 package org.example.grandaobiblioteca.entidad;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "libro")
 public class Libro {
